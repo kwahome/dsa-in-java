@@ -33,8 +33,12 @@ public class BinaryMinHeapTest {
         int index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll().intValue());
+            int topItem = binaryMinHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }
@@ -46,8 +50,12 @@ public class BinaryMinHeapTest {
         index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll().intValue());
+            int topItem = binaryMinHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }
@@ -77,8 +85,12 @@ public class BinaryMinHeapTest {
         int index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll());
+            String topItem = binaryMinHeap.poll();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }
@@ -90,12 +102,56 @@ public class BinaryMinHeapTest {
         index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll());
+            String topItem = binaryMinHeap.poll();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }
 
+    }
+
+    @Test
+    public void shouldExpandCapacity() {
+        Heap<Integer> binaryMinHeap = new BinaryMinHeap<Integer>(3);
+
+        Assert.assertEquals(0, binaryMinHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMinHeap.getCapacity());
+
+        binaryMinHeap.insert(9);
+        Assert.assertEquals(9, binaryMinHeap.peek().intValue());
+        Assert.assertEquals(1, binaryMinHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMinHeap.getCapacity());
+
+        binaryMinHeap.insert(-1);
+        Assert.assertEquals(-1, binaryMinHeap.peek().intValue());
+        Assert.assertEquals(2, binaryMinHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMinHeap.getCapacity());
+
+        Integer itemsToInsert[] = { 5, 1, 7, 3, 2, 0, 5, 6, 8, 4 };
+
+        binaryMinHeap.insert(itemsToInsert);
+
+        Assert.assertEquals(itemsToInsert.length + 2, binaryMinHeap.getNumberOfItems());
+        Assert.assertEquals(itemsToInsert.length + 2, binaryMinHeap.getCapacity());
+
+        int expected[] = { -1, 0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9 };
+
+        int index = 0;
+
+        while (!binaryMinHeap.isEmpty()) {
+            int topItem = binaryMinHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
+
+            index++;
+        }
     }
 
     @Test
@@ -135,8 +191,12 @@ public class BinaryMinHeapTest {
         int index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll().intValue());
+            int topItem = binaryMinHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }
@@ -200,8 +260,12 @@ public class BinaryMinHeapTest {
         int index = 0;
 
         while (!binaryMinHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMinHeap.poll().intValue());
+            int topItem = binaryMinHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }

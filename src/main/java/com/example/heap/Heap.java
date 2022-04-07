@@ -1,25 +1,27 @@
 package com.example.heap;
 
+import java.util.Collection;
+
 /**
  * Heap interface.
  */
 public interface Heap<T extends Comparable<T>> {
 
     /**
-     * Removes every element in the heap.
+     * Removes every item in the heap.
      * 
      * This is an O(n) operation.
      */
     void clear();
 
     /**
-     * Check whether an element is contained in the heap.
+     * Check whether an item is contained in the heap.
      * 
      * This is an O(n) operation.
      * 
      * @return boolean
      */
-    boolean contains(T element);
+    boolean contains(T item);
 
     /**
      * Gets the capacity of the heap.
@@ -40,9 +42,9 @@ public interface Heap<T extends Comparable<T>> {
     T getItemAt(int position);
 
     /**
-     * Return the number of elements in the heap.
+     * Return the number of items in the heap.
      * 
-     * This is an O(1) because the number of elements in the
+     * This is an O(1) because the number of items in the
      * heap can be calculated as the offset of memory locations
      * of the array that backs the heap.
      * 
@@ -53,14 +55,28 @@ public interface Heap<T extends Comparable<T>> {
     int getNumberOfItems();
 
     /**
-     * Insert a non-null element to the heap.
+     * Insert a non-null item to the heap.
+     *
+     * This is an O(log(n)) operation.
+     */
+    void insert(T item);
+
+    /**
+     * Insert a non-null array of items to the heap.
      * 
      * This is an O(log(n)) operation.
      */
-    void insert(T element);
+    void insert(T[] items);
 
     /**
-     * Check whether the heap has at least one element or not.
+     * Insert a non-null collection of items to the heap.
+     * 
+     * This is an O(log(n)) operation.
+     */
+    void insert(Collection<T> items);
+
+    /**
+     * Check whether the heap has at least one item or not.
      * 
      * This is an O(1) operation.
      * 
@@ -69,7 +85,7 @@ public interface Heap<T extends Comparable<T>> {
     boolean isEmpty();
 
     /**
-     * Return the value of the element at the root of the heap
+     * Return the value of the item at the root of the heap
      * or null if empty.
      * 
      * This is an O(1) operation.
@@ -79,8 +95,9 @@ public interface Heap<T extends Comparable<T>> {
     T peek();
 
     /**
-     * Remove the element at the root of the heap.
      * 
+     * Remove the item at the top of the heap.
+     *
      * This is an O(log(n)) operation because the
      * heap needs to be reorganized to maintain the
      * heap invariant.
@@ -90,7 +107,7 @@ public interface Heap<T extends Comparable<T>> {
     T poll();
 
     /**
-     * Remove an element from the heap.
+     * Remove an item from the heap.
      * 
      * This is an O(log(n)) operation because the
      * heap needs to be reorganized to maintain the
@@ -98,10 +115,10 @@ public interface Heap<T extends Comparable<T>> {
      * 
      * @return boolean
      */
-    boolean remove(T element);
+    boolean remove(T item);
 
     /**
-     * Remove an element from a given position in the heap.
+     * Remove an item from a given position in the heap.
      * 
      * This is an O(log(n)) operation because the
      * heap needs to be reorganized to maintain the

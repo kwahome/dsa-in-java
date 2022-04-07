@@ -33,8 +33,12 @@ public class BinaryMaxHeapTest {
         int index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll().intValue());
+            int topItem = binaryMaxHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -46,8 +50,12 @@ public class BinaryMaxHeapTest {
         index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll().intValue());
+            int topItem = binaryMaxHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -77,8 +85,12 @@ public class BinaryMaxHeapTest {
         int index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll());
+            String topItem = binaryMaxHeap.poll();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -90,12 +102,56 @@ public class BinaryMaxHeapTest {
         index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll());
+            String topItem = binaryMaxHeap.poll();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
 
+    }
+
+    @Test
+    public void shouldExpandCapacity() {
+        Heap<Integer> binaryMaxHeap = new BinaryMaxHeap<Integer>(3);
+
+        Assert.assertEquals(0, binaryMaxHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMaxHeap.getCapacity());
+
+        binaryMaxHeap.insert(-1);
+        Assert.assertEquals(-1, binaryMaxHeap.peek().intValue());
+        Assert.assertEquals(1, binaryMaxHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMaxHeap.getCapacity());
+
+        binaryMaxHeap.insert(9);
+        Assert.assertEquals(9, binaryMaxHeap.peek().intValue());
+        Assert.assertEquals(2, binaryMaxHeap.getNumberOfItems());
+        Assert.assertEquals(3, binaryMaxHeap.getCapacity());
+
+        Integer itemsToInsert[] = { 5, 1, 7, 3, 2, 0, 5, 6, 8, 4 };
+
+        binaryMaxHeap.insert(itemsToInsert);
+
+        Assert.assertEquals(itemsToInsert.length + 2, binaryMaxHeap.getNumberOfItems());
+        Assert.assertEquals(itemsToInsert.length + 2, binaryMaxHeap.getCapacity());
+
+        int expected[] = { 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 0, -1 };
+
+        int index = 0;
+
+        while (!binaryMaxHeap.isEmpty()) {
+            int topItem = binaryMaxHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
+
+            index++;
+        }
     }
 
     @Test
@@ -135,8 +191,12 @@ public class BinaryMaxHeapTest {
         int index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll().intValue());
+            int topItem = binaryMaxHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -200,8 +260,12 @@ public class BinaryMaxHeapTest {
         int index = 0;
 
         while (!binaryMaxHeap.isEmpty()) {
-            System.out.print(index);
-            Assert.assertEquals(expected[index], binaryMaxHeap.poll().intValue());
+            int topItem = binaryMaxHeap.poll().intValue();
+
+            System.out.print(topItem + ", ");
+
+            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
