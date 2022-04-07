@@ -194,14 +194,14 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     /**
      * {@inheritDoc}
      */
-    public boolean remove(T element) {
-        if (element == null) {
+    public boolean remove(T item) {
+        if (item == null) {
             return false;
         }
 
         // Linear removal via search, O(n)
         for (int i = 0; i < this.getNumberOfItems(); i++) {
-            if (element.equals(this.getItemAt(i))) {
+            if (item.equals(this.getItemAt(i))) {
                 this.removeAt(i);
                 return true;
             }
@@ -222,12 +222,11 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
 
         int indexOfLastElement = this.getNumberOfItems() - 1;
 
-        this.swap(position, indexOfLastElement);
+        // Remove the swapped item at last position
 
-        // Remove the swapped item at last postion from the backing
         this.heapBackingList.remove(indexOfLastElement);
 
-        // Check if the last element was removed
+        // Check if the last item was removed
         if (position == indexOfLastElement) {
             return removed;
         }

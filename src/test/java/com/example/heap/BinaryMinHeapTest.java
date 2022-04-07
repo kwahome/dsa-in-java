@@ -37,7 +37,7 @@ public class BinaryMinHeapTest {
 
             System.out.print(topItem + ", ");
 
-            Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected[index], binaryMinHeap.poll().intValue());
 
             index++;
         }
@@ -191,6 +191,7 @@ public class BinaryMinHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMinHeap.getNumberOfItems());
 
             index++;
         }

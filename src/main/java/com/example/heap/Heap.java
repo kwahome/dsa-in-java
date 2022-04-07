@@ -95,8 +95,8 @@ public interface Heap<T extends Comparable<T>> {
     T peek();
 
     /**
-     * Remove the element at the root of the heap.
      * 
+     * Remove the element a *
      * This is an O(log(n)) operation because the
      * heap needs to be reorganized to maintain the
      * heap invariant.
