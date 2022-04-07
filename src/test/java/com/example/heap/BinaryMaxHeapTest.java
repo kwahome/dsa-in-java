@@ -38,6 +38,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -54,6 +55,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -88,6 +90,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -104,6 +107,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -144,6 +148,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -191,6 +196,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }
@@ -259,6 +265,7 @@ public class BinaryMaxHeapTest {
             System.out.print(topItem + ", ");
 
             Assert.assertEquals(expected[index], topItem);
+            Assert.assertEquals(expected.length - (index + 1), binaryMaxHeap.getNumberOfItems());
 
             index++;
         }

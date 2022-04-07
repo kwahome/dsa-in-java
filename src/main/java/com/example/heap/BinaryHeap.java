@@ -223,6 +223,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
         int indexOfLastElement = this.getNumberOfItems() - 1;
 
         // Remove the swapped item at last position
+        this.swap(position, indexOfLastElement);
 
         this.heapBackingList.remove(indexOfLastElement);
 
