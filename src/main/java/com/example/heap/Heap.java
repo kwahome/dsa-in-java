@@ -1,25 +1,27 @@
 package com.example.heap;
 
+import java.util.Collection;
+
 /**
  * Heap interface.
  */
 public interface Heap<T extends Comparable<T>> {
 
     /**
-     * Removes every element in the heap.
+     * Removes every item in the heap.
      * 
      * This is an O(n) operation.
      */
     void clear();
 
     /**
-     * Check whether an element is contained in the heap.
+     * Check whether an item is contained in the heap.
      * 
      * This is an O(n) operation.
      * 
      * @return boolean
      */
-    boolean contains(T element);
+    boolean contains(T item);
 
     /**
      * Gets the capacity of the heap.
@@ -53,11 +55,25 @@ public interface Heap<T extends Comparable<T>> {
     int getNumberOfItems();
 
     /**
-     * Insert a non-null element to the heap.
+     * Insert a non-null item to the heap.
+     *
+     * This is an O(log(n)) operation.
+     */
+    void insert(T item);
+
+    /**
+     * Insert a non-null array of items to the heap.
      * 
      * This is an O(log(n)) operation.
      */
-    void insert(T element);
+    void insert(T[] items);
+
+    /**
+     * Insert a non-null collection of items to the heap.
+     * 
+     * This is an O(log(n)) operation.
+     */
+    void insert(Collection<T> items);
 
     /**
      * Check whether the heap has at least one element or not.

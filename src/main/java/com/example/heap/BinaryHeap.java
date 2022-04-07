@@ -9,7 +9,7 @@ import java.util.List;
  */
 public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
 
-    // A dynamic list to track the elements inside the heap
+    // A dynamic list to track the items inside the heap
     private List<T> heapBackingList = null;
 
     // An integer representing the capacity of the heap.
@@ -34,7 +34,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     }
 
     /**
-     * Construct a heap given an array elements that should be inserted.
+     * Construct a heap given an array of items that should be inserted.
      * 
      * It uses heapify in O(n) time, a great explanation.
      * 
@@ -42,15 +42,15 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
      * 
      * @param capacity an integer representing the capacity of the heap.
      */
-    public BinaryHeap(T[] elements) {
+    public BinaryHeap(T[] items) {
 
-        this.capacity = elements.length;
+        this.capacity = items.length;
 
         this.heapBackingList = new ArrayList<T>(this.capacity);
 
         // Place all element in the backing list
-        for (int i = 0; i < this.capacity; i++) {
-            this.heapBackingList.add(elements[i]);
+        for (T item : items) {
+            this.heapBackingList.add(item);
         }
 
         // Heapify process, O(n)
@@ -60,20 +60,20 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     }
 
     /**
-     * Construct a heap given a collectoin of elements that should be inserted.
+     * Construct a heap given a collectoin of items that should be inserted.
      * 
      * It uses heapify in O(n) time.
      * 
      * @param capacity an integer representing the capacity of the heap.
      */
-    public BinaryHeap(Collection<T> elements) {
+    public BinaryHeap(Collection<T> items) {
 
-        this.capacity = elements.size();
+        this.capacity = items.size();
 
         this.heapBackingList = new ArrayList<T>(this.capacity);
 
         // Add all elements of the given collection to the heap, O(n)
-        this.heapBackingList.addAll(elements);
+        this.heapBackingList.addAll(items);
 
         // Heapify process, O(n)
         for (int i = Math.max(0, (this.capacity / 2) - 1); i >= 0; i--) {
@@ -91,10 +91,10 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     /**
      * {@inheritDoc}
      */
-    public boolean contains(T element) {
+    public boolean contains(T item) {
         // Linear scan to check membership
         for (int i = 0; i < this.getNumberOfItems(); i++) {
-            if (this.getItemAt(i).equals(element)) {
+            if (this.getItemAt(i).equals(item)) {
                 return true;
             }
         }
@@ -118,14 +118,56 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     /**
      * {@inheritDoc}
      */
-    public void insert(T element) {
-        if (element == null) {
+    public void insert(T item) {
+        if (item == null) {
             throw new IllegalArgumentException();
         }
 
-        this.heapBackingList.add(element);
+        this.heapBackingList.add(item);
 
         this.heapifyUp(this.getNumberOfItems() - 1);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void insert(T[] items) {
+        if (items == null) {
+            throw new IllegalArgumentException();
+        }
+
+        for (T item : items) {
+            this.heapBackingList.add(item);
+        }
+
+        // Heapify process, O(n)
+        for (int i = Math.max(0, (this.getNumberOfItems() / 2) - 1); i >= 0; i--) {
+            this.heapifyDown(i);
+        }
+
+        // set capacity to the right value
+        this.capacity = Math.max(this.capacity, this.getNumberOfItems());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void insert(Collection<T> items) {
+        if (items == null) {
+            throw new IllegalArgumentException();
+        }
+
+        for (T item : items) {
+            this.heapBackingList.add(item);
+        }
+
+        // Heapify process, O(n)
+        for (int i = Math.max(0, (this.getNumberOfItems() / 2) - 1); i >= 0; i--) {
+            this.heapifyDown(i);
+        }
+
+        // set capacity to the right value
+        this.capacity = Math.max(this.capacity, this.getNumberOfItems());
     }
 
     /**
