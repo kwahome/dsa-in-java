@@ -25,29 +25,29 @@ public class BinaryMinHeap<T extends Comparable<T>> extends BinaryHeap<T> {
     }
 
     /**
-     * Construct a heap given an array elements that should be inserted.
+     * Construct a heap given an array items that should be inserted.
      * 
      * It uses heapify in O(n) time, a great explanation.
      * 
      * http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
      * 
-     * @param capacity an integer representing the capacity of the heap.
+     * @param items an array of T items.
      */
-    public BinaryMinHeap(T[] elements) {
+    public BinaryMinHeap(T[] items) {
 
-        super(elements);
+        super(items);
     }
 
     /**
-     * Construct a heap given a collectoin of elements that should be inserted.
+     * Construct a heap given a collection of items that should be inserted.
      * 
      * It uses heapify in O(n) time.
      * 
-     * @param capacity an integer representing the capacity of the heap.
+     * @param items a collection of T items.
      */
-    public BinaryMinHeap(Collection<T> elements) {
+    public BinaryMinHeap(Collection<T> items) {
 
-        super(elements);
+        super(items);
     }
 
     @Override

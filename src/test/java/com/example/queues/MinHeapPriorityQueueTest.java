@@ -1,9 +1,6 @@
-package com.example.queue.priorityqueue;
+package com.example.queues;
 
 import java.util.Arrays;
-
-import com.example.queues.priorityqueue.PriorityQueue;
-import com.example.queues.priorityqueue.PriorityQueueImpl;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,22 +8,22 @@ import org.junit.Test;
 /**
  * Unit test for binary min heap.
  */
-public class PriorityQueueTest {
+public class MinHeapPriorityQueueTest {
 
     @Test
     public void shouldConstructPriorityQueue() {
-        PriorityQueue<Integer> priorityQueue = new PriorityQueueImpl<>();
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
         Assert.assertEquals(1, priorityQueue.getCapacity());
 
-        priorityQueue = new PriorityQueueImpl<Integer>(10);
+        priorityQueue = new MinHeapPriorityQueue<Integer>(10);
 
         Assert.assertEquals(0, priorityQueue.size());
         Assert.assertEquals(10, priorityQueue.getCapacity());
 
         Integer itemsToInsert[] = { 5, 1, 7, 3, 2, 0, 5, 6, 8, 4 };
-        priorityQueue = new PriorityQueueImpl<Integer>(itemsToInsert);
+        priorityQueue = new MinHeapPriorityQueue<Integer>(itemsToInsert);
 
         Assert.assertEquals(itemsToInsert.length, priorityQueue.size());
         Assert.assertEquals(itemsToInsert.length, priorityQueue.getCapacity());
@@ -46,7 +43,7 @@ public class PriorityQueueTest {
             index++;
         }
 
-        priorityQueue = new PriorityQueueImpl<Integer>(Arrays.asList(itemsToInsert));
+        priorityQueue = new MinHeapPriorityQueue<Integer>(Arrays.asList(itemsToInsert));
         Assert.assertEquals(itemsToInsert.length, priorityQueue.size());
         Assert.assertEquals(itemsToInsert.length, priorityQueue.getCapacity());
 
@@ -67,18 +64,18 @@ public class PriorityQueueTest {
 
     @Test
     public void shouldConstructPriorityQueue_StringTypes() {
-        PriorityQueue<String> priorityQueue = new PriorityQueueImpl<>();
+        PriorityQueue<String> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
         Assert.assertEquals(1, priorityQueue.getCapacity());
 
-        priorityQueue = new PriorityQueueImpl<String>(10);
+        priorityQueue = new MinHeapPriorityQueue<String>(10);
 
         Assert.assertEquals(0, priorityQueue.size());
         Assert.assertEquals(10, priorityQueue.getCapacity());
 
         String itemsToInsert[] = { "z", "m", "a", "a1", "ba", "b", "k", "0", "c", "x", "1z" };
-        priorityQueue = new PriorityQueueImpl<String>(itemsToInsert);
+        priorityQueue = new MinHeapPriorityQueue<String>(itemsToInsert);
 
         Assert.assertEquals(itemsToInsert.length, priorityQueue.size());
         Assert.assertEquals(itemsToInsert.length, priorityQueue.getCapacity());
@@ -98,7 +95,7 @@ public class PriorityQueueTest {
             index++;
         }
 
-        priorityQueue = new PriorityQueueImpl<String>(Arrays.asList(itemsToInsert));
+        priorityQueue = new MinHeapPriorityQueue<String>(Arrays.asList(itemsToInsert));
         Assert.assertEquals(itemsToInsert.length, priorityQueue.size());
         Assert.assertEquals(itemsToInsert.length, priorityQueue.getCapacity());
 
@@ -119,7 +116,7 @@ public class PriorityQueueTest {
 
     @Test
     public void shouldExpandCapacity() {
-        PriorityQueue<Integer> priorityQueue = new PriorityQueueImpl<Integer>(3);
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<Integer>(3);
 
         Assert.assertEquals(0, priorityQueue.size());
         Assert.assertEquals(3, priorityQueue.getCapacity());
@@ -159,7 +156,7 @@ public class PriorityQueueTest {
 
     @Test
     public void shouldAddItems() {
-        PriorityQueue<Integer> priorityQueue = new PriorityQueueImpl<>();
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
 
@@ -207,7 +204,7 @@ public class PriorityQueueTest {
 
     @Test
     public void shouldRemoveItems() {
-        PriorityQueue<Integer> priorityQueue = new PriorityQueueImpl<>();
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
 

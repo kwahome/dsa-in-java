@@ -42,19 +42,6 @@ public interface Heap<T extends Comparable<T>> {
     T getItemAt(int position);
 
     /**
-     * Return the number of items in the heap.
-     * 
-     * This is an O(1) because the number of items in the
-     * heap can be calculated as the offset of memory locations
-     * of the array that backs the heap.
-     * 
-     * If a linked list is used, it becomes an O(n) operation.
-     * 
-     * @return int
-     */
-    int getNumberOfItems();
-
-    /**
      * Insert a non-null item to the heap.
      *
      * This is an O(log(n)) operation.
@@ -127,4 +114,17 @@ public interface Heap<T extends Comparable<T>> {
      * @return T
      */
     T removeAt(int position);
+
+    /**
+     * Return the number of items in the heap.
+     * 
+     * This is an O(1) because the number of items in the
+     * heap can be calculated as the offset of memory locations
+     * of the array that backs the heap.
+     * 
+     * If a linked list is used, it becomes an O(n) operation.
+     * 
+     * @return int
+     */
+    int size();
 }
