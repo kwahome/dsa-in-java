@@ -1,4 +1,4 @@
-package com.example.queues.priorityqueue;
+package com.example.queues;
 
 import java.util.Collection;
 
@@ -8,7 +8,7 @@ import com.example.heap.Heap;
 /**
  * PriorityQueue implementation
  */
-public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue<T> {
+public class MinHeapPriorityQueue<T extends Comparable<T>> implements PriorityQueue<T> {
 
     // A Heap that backs the priority queue.
     private Heap<T> backingHeap = null;
@@ -17,7 +17,7 @@ public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue
      * Class constructor.
      * 
      */
-    public PriorityQueueImpl() {
+    public MinHeapPriorityQueue() {
         this.backingHeap = new BinaryMinHeap<>();
     }
 
@@ -26,7 +26,7 @@ public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue
      * 
      * @param capacity an integer representing the capacity of the heap.
      */
-    public PriorityQueueImpl(int capacity) {
+    public MinHeapPriorityQueue(int capacity) {
         this.backingHeap = new BinaryMinHeap<>(capacity);
     }
 
@@ -35,7 +35,7 @@ public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue
      * 
      * @param capacity an integer representing the capacity of the heap.
      */
-    public PriorityQueueImpl(T[] items) {
+    public MinHeapPriorityQueue(T[] items) {
 
         this.backingHeap = new BinaryMinHeap<>(items);
     }
@@ -47,7 +47,7 @@ public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue
      * 
      * @param capacity an integer representing the capacity of the heap.
      */
-    public PriorityQueueImpl(Collection<T> items) {
+    public MinHeapPriorityQueue(Collection<T> items) {
 
         this.backingHeap = new BinaryMinHeap<>(items);
     }
@@ -79,7 +79,7 @@ public class PriorityQueueImpl<T extends Comparable<T>> implements PriorityQueue
 
     @Override
     public int size() {
-        return this.backingHeap.getNumberOfItems();
+        return this.backingHeap.size();
     }
 
     @Override

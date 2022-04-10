@@ -93,7 +93,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
      */
     public boolean contains(T item) {
         // Linear scan to check membership
-        for (int i = 0; i < this.getNumberOfItems(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             if (this.getItemAt(i).equals(item)) {
                 return true;
             }
@@ -112,7 +112,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
      * {@inheritDoc}
      */
     public T getItemAt(int position) {
-        return (position >= this.getNumberOfItems() || position < 0) ? null : this.heapBackingList.get(position);
+        return (position >= this.size() || position < 0) ? null : this.heapBackingList.get(position);
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
 
         this.heapBackingList.add(item);
 
-        this.heapifyUp(this.getNumberOfItems() - 1);
+        this.heapifyUp(this.size() - 1);
     }
 
     /**
@@ -141,12 +141,12 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
         }
 
         // Heapify process, O(n)
-        for (int i = Math.max(0, (this.getNumberOfItems() / 2) - 1); i >= 0; i--) {
+        for (int i = Math.max(0, (this.size() / 2) - 1); i >= 0; i--) {
             this.heapifyDown(i);
         }
 
         // set capacity to the right value
-        this.capacity = Math.max(this.capacity, this.getNumberOfItems());
+        this.capacity = Math.max(this.capacity, this.size());
     }
 
     /**
@@ -162,19 +162,19 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
         }
 
         // Heapify process, O(n)
-        for (int i = Math.max(0, (this.getNumberOfItems() / 2) - 1); i >= 0; i--) {
+        for (int i = Math.max(0, (this.size() / 2) - 1); i >= 0; i--) {
             this.heapifyDown(i);
         }
 
         // set capacity to the right value
-        this.capacity = Math.max(this.capacity, this.getNumberOfItems());
+        this.capacity = Math.max(this.capacity, this.size());
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean isEmpty() {
-        return this.getNumberOfItems() == 0;
+        return this.size() == 0;
     }
 
     /**
@@ -200,7 +200,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
         }
 
         // Linear removal via search, O(n)
-        for (int i = 0; i < this.getNumberOfItems(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             if (item.equals(this.getItemAt(i))) {
                 this.removeAt(i);
                 return true;
@@ -220,7 +220,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
 
         T removed = this.getItemAt(position);
 
-        int indexOfLastElement = this.getNumberOfItems() - 1;
+        int indexOfLastElement = this.size() - 1;
 
         // Remove the swapped item at last position
         this.swap(position, indexOfLastElement);
@@ -245,7 +245,7 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     /**
      * {@inheritDoc}
      */
-    public int getNumberOfItems() {
+    public int size() {
         return this.heapBackingList.size();
     }
 
@@ -278,18 +278,18 @@ public abstract class BinaryHeap<T extends Comparable<T>> implements Heap<T> {
     }
 
     protected boolean hasLeftChild(int index) {
-        return this.getIndexOfLeftChild(index) < this.getNumberOfItems();
+        return this.getIndexOfLeftChild(index) < this.size();
     }
 
     protected boolean hasRightChild(int index) {
-        return this.getIndexOfRightChild(index) < this.getNumberOfItems();
+        return this.getIndexOfRightChild(index) < this.size();
     }
 
     // Returning true if the passed
     // node is a leaf node
     protected boolean isLeaf(int position) {
 
-        if (position > (this.getNumberOfItems() / 2) && position <= this.getNumberOfItems()) {
+        if (position > (this.size() / 2) && position <= this.size()) {
             return true;
         }
 
