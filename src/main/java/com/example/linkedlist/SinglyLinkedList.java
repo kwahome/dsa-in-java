@@ -22,9 +22,7 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
      * Class constructor.
      */
     public SinglyLinkedList() {
-        this.head = null;
-        this.tail = null;
-        this.numberOfItems = 0;
+        this.initialize();
     }
 
     /**
@@ -300,6 +298,13 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
      */
     public void addLast(T[] item) {
         this.addAll(item);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void clear() {
+        this.initialize();
     }
 
     /**
@@ -585,7 +590,7 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
         if (current != null) {
             if (current.equals(this.getHead()) || previous == null) {
                 // we are removing the head node
-                this.head = null;
+                this.head = current.getNextNode();
             } else {
                 previous.setNextNode(current.getNextNode());
             }
@@ -604,6 +609,49 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public T removeAt(int index) {
+        T item = this.get(index);
+
+        LinkedListNode<T> current = this.getHead();
+        LinkedListNode<T> previous = null;
+
+        // seek the item node and its preceding node
+        while (current != null) {
+            if (current.getNodeData().equals(item)) {
+                break;
+            }
+
+            previous = current;
+            current = current.getNextNode();
+        }
+
+        if (current != null) {
+            if (current.equals(this.getHead()) || previous == null) {
+                // we are removing the head node
+                this.head = current.getNextNode();
+            } else {
+                previous.setNextNode(current.getNextNode());
+            }
+
+            if (current.equals(this.getTail()) || current.getNextNode() == null) {
+                // this node is the tail node
+                this.tail = previous;
+            }
+
+            // set to null so that its gc'ed
+            current = null;
+
+            this.numberOfItems--;
+
+            return item;
+        }
+
+        return null;
     }
 
     /**
@@ -666,5 +714,11 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
      */
     public int size() {
         return this.numberOfItems;
+    }
+
+    private void initialize() {
+        this.head = null;
+        this.tail = null;
+        this.numberOfItems = 0;
     }
 }

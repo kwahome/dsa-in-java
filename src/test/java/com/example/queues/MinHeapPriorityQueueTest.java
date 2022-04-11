@@ -133,10 +133,18 @@ public class MinHeapPriorityQueueTest {
 
         Integer itemsToInsert[] = { 5, 1, 7, 3, 2, 0, 5, 6, 8, 4 };
 
-        priorityQueue.enqueue(itemsToInsert);
+        // we have exceeded the capacity
+        Assert.assertFalse(priorityQueue.enqueue(itemsToInsert));
 
-        Assert.assertEquals(itemsToInsert.length + 2, priorityQueue.size());
-        Assert.assertEquals(itemsToInsert.length + 2, priorityQueue.getCapacity());
+        int initialQueueCapacity = priorityQueue.getCapacity();
+        int initialQueueSize = priorityQueue.size();
+
+        Assert.assertTrue(priorityQueue.expandCapacity(itemsToInsert.length));
+
+        Assert.assertTrue(priorityQueue.enqueue(itemsToInsert));
+
+        Assert.assertEquals(itemsToInsert.length + initialQueueSize, priorityQueue.size());
+        Assert.assertEquals(itemsToInsert.length + initialQueueCapacity, priorityQueue.getCapacity());
 
         int expected[] = { -1, 0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9 };
 
@@ -155,36 +163,40 @@ public class MinHeapPriorityQueueTest {
     }
 
     @Test
-    public void shouldAddItems() {
+    public void shouldEnqueueItemsIfNotFull() {
         PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
 
-        priorityQueue.enqueue(1);
+        Assert.assertTrue(priorityQueue.enqueue(1));
 
         Assert.assertEquals(1, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
 
         Assert.assertEquals(1, priorityQueue.peek().intValue());
 
-        priorityQueue.enqueue(0);
+        Assert.assertTrue(priorityQueue.expandCapacity(9));
+
+        Assert.assertTrue(priorityQueue.enqueue(0));
 
         Assert.assertEquals(0, priorityQueue.peek().intValue());
 
-        priorityQueue.enqueue(3);
+        Assert.assertTrue(priorityQueue.enqueue(3));
 
-        priorityQueue.enqueue(5);
+        Assert.assertTrue(priorityQueue.enqueue(5));
 
-        priorityQueue.enqueue(8);
+        Assert.assertTrue(priorityQueue.enqueue(8));
 
-        priorityQueue.enqueue(6);
+        Assert.assertTrue(priorityQueue.enqueue(6));
 
-        priorityQueue.enqueue(4);
+        Assert.assertTrue(priorityQueue.enqueue(4));
 
-        priorityQueue.enqueue(5);
+        Assert.assertTrue(priorityQueue.enqueue(5));
 
-        priorityQueue.enqueue(2);
+        Assert.assertTrue(priorityQueue.enqueue(2));
 
-        priorityQueue.enqueue(7);
+        Assert.assertTrue(priorityQueue.enqueue(7));
 
         int expected[] = { 0, 1, 2, 3, 4, 5, 5, 6, 7, 8 };
 
@@ -203,14 +215,57 @@ public class MinHeapPriorityQueueTest {
     }
 
     @Test
-    public void shouldRemoveItems() {
+    public void shouldDequeueAnItemIfNotEmpty() {
         PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
 
         Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+        Assert.assertNull(priorityQueue.dequeue());
 
         priorityQueue.enqueue(1);
 
         Assert.assertEquals(1, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+
+        Assert.assertEquals(1, priorityQueue.peek().intValue());
+        Assert.assertEquals(1, priorityQueue.dequeue().intValue());
+
+        Integer[] arrayOfQueueItems = { 0, 1, 2, 3, 4, 5, 6, 8 };
+
+        Assert.assertFalse(priorityQueue.hasCapacity(arrayOfQueueItems.length));
+
+        Assert.assertTrue(priorityQueue.expandCapacity(arrayOfQueueItems.length));
+
+        priorityQueue.enqueue(arrayOfQueueItems);
+
+        Assert.assertEquals(arrayOfQueueItems.length, priorityQueue.size());
+        Assert.assertEquals(arrayOfQueueItems.length + 1, priorityQueue.getCapacity());
+
+        Assert.assertEquals(arrayOfQueueItems[0], priorityQueue.peek());
+
+        int index = 0;
+
+        do {
+            Assert.assertEquals(arrayOfQueueItems[index], priorityQueue.dequeue());
+
+            Assert.assertEquals(arrayOfQueueItems.length - (index + 1), priorityQueue.size());
+
+            index++;
+
+        } while (!priorityQueue.isEmpty());
+    }
+
+    @Test
+    public void shouldRemoveItems() {
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
+
+        Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+
+        Assert.assertTrue(priorityQueue.enqueue(1));
+
+        Assert.assertEquals(1, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
 
         Assert.assertEquals(1, priorityQueue.peek().intValue());
 
@@ -219,6 +274,7 @@ public class MinHeapPriorityQueueTest {
         Assert.assertFalse(priorityQueue.remove(0));
 
         Assert.assertEquals(1, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
 
         Assert.assertEquals(1, priorityQueue.peek().intValue());
 
@@ -226,34 +282,42 @@ public class MinHeapPriorityQueueTest {
         Assert.assertEquals(1, priorityQueue.removeAt(0).intValue());
 
         Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+        Assert.assertTrue(priorityQueue.hasCapacity(1));
 
         Assert.assertEquals(null, priorityQueue.peek());
 
+        Assert.assertTrue(priorityQueue.expandCapacity(9));
+
         // insert more elements
 
-        priorityQueue.enqueue(3);
+        Assert.assertTrue(priorityQueue.enqueue(3));
 
-        priorityQueue.enqueue(5);
+        Assert.assertTrue(priorityQueue.enqueue(5));
 
-        priorityQueue.enqueue(8);
+        Assert.assertTrue(priorityQueue.enqueue(8));
 
-        priorityQueue.enqueue(6);
+        Assert.assertTrue(priorityQueue.enqueue(6));
 
-        priorityQueue.enqueue(4);
+        Assert.assertTrue(priorityQueue.enqueue(4));
 
-        priorityQueue.enqueue(1);
+        Assert.assertTrue(priorityQueue.enqueue(1));
 
-        priorityQueue.enqueue(5);
+        Assert.assertTrue(priorityQueue.enqueue(5));
 
-        priorityQueue.enqueue(2);
+        Assert.assertTrue(priorityQueue.enqueue(2));
 
-        priorityQueue.enqueue(7);
+        Assert.assertTrue(priorityQueue.enqueue(7));
 
-        priorityQueue.enqueue(0);
+        Assert.assertTrue(priorityQueue.enqueue(0));
+
+        Assert.assertFalse(priorityQueue.hasCapacity(1));
 
         // remove some of them
         Assert.assertTrue(priorityQueue.remove(5));
         Assert.assertTrue(priorityQueue.remove(7));
+
+        Assert.assertFalse(priorityQueue.hasCapacity(2));
 
         int expected[] = { 0, 1, 2, 3, 4, 5, 6, 8 };
 
@@ -269,6 +333,67 @@ public class MinHeapPriorityQueueTest {
 
             index++;
         }
+    }
 
+    @Test
+    public void shouldClearItems() {
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
+
+        Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+
+        priorityQueue.enqueue(1);
+
+        Assert.assertEquals(1, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+
+        Assert.assertEquals(1, priorityQueue.peek().intValue());
+
+        Integer[] arrayOfQueueItems = { 0, 1, 2, 3, 4, 5, 6, 8 };
+
+        Assert.assertFalse(priorityQueue.hasCapacity(arrayOfQueueItems.length));
+
+        Assert.assertTrue(priorityQueue.expandCapacity(arrayOfQueueItems.length));
+
+        priorityQueue.enqueue(arrayOfQueueItems);
+
+        Assert.assertEquals(arrayOfQueueItems.length + 1, priorityQueue.size());
+        Assert.assertEquals(arrayOfQueueItems.length + 1, priorityQueue.getCapacity());
+
+        Assert.assertEquals(arrayOfQueueItems[0], priorityQueue.peek());
+
+        priorityQueue.clear();
+
+        Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(arrayOfQueueItems.length + 1, priorityQueue.getCapacity());
+        Assert.assertTrue(priorityQueue.hasCapacity(arrayOfQueueItems.length + 1));
+
+        Assert.assertEquals(null, priorityQueue.peek());
+    }
+
+    @Test
+    public void shouldGetAnItemGivenAPosition() {
+        PriorityQueue<Integer> priorityQueue = new MinHeapPriorityQueue<>();
+
+        Assert.assertEquals(0, priorityQueue.size());
+        Assert.assertEquals(1, priorityQueue.getCapacity());
+        Assert.assertEquals(null, priorityQueue.getItemAt(0));
+
+        Integer[] arrayOfQueueItems = { 0, 1, 2, 3, 4, 5, 6, 8 };
+
+        Assert.assertFalse(priorityQueue.hasCapacity(arrayOfQueueItems.length));
+
+        Assert.assertTrue(priorityQueue.expandCapacity(arrayOfQueueItems.length));
+
+        priorityQueue.enqueue(arrayOfQueueItems);
+
+        Assert.assertEquals(arrayOfQueueItems.length, priorityQueue.size());
+        Assert.assertEquals(arrayOfQueueItems.length + 1, priorityQueue.getCapacity());
+
+        Assert.assertEquals(arrayOfQueueItems[0], priorityQueue.peek());
+
+        for (int i = 0; i < arrayOfQueueItems.length; i++) {
+            Assert.assertEquals(arrayOfQueueItems[i], priorityQueue.getItemAt(i));
+        }
     }
 }

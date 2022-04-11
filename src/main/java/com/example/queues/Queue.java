@@ -32,19 +32,25 @@ public interface Queue<T> {
      * Insert a non-null item to the queue.
      * 
      */
-    void enqueue(T item);
+    boolean enqueue(T item);
 
     /**
      * Insert a non-null array of items to the queue.
      * 
      */
-    void enqueue(T[] items);
+    boolean enqueue(T[] items);
 
     /**
      * Insert a non-null collection of items to the queue.
      * 
      */
-    void enqueue(Collection<T> items);
+    boolean enqueue(Collection<T> items);
+
+    /**
+     * Increases the capacity of a queue by the specified unit.
+     * 
+     */
+    boolean expandCapacity(int additionalCapacity);
 
     /**
      * Gets the capacity of the queue.
@@ -62,11 +68,25 @@ public interface Queue<T> {
     T getItemAt(int position);
 
     /**
+     * Returns a boolean indicating whether the queue has capacity
+     * for the number of items specified or not.
+     * 
+     */
+    boolean hasCapacity(int numberOfItems);
+
+    /**
      * Check whether the queue has at least one item or not.
      * 
      * @return boolean
      */
     boolean isEmpty();
+
+    /**
+     * Check whether the queue has reached its capacity.
+     * 
+     * @return boolean
+     */
+    boolean isFull();
 
     /**
      * Return the value of the item at the top of the queue

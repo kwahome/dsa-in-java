@@ -2,87 +2,197 @@ package com.example.queues;
 
 import java.util.Collection;
 
+import com.example.linkedlist.LinkedList;
+import com.example.linkedlist.SinglyLinkedList;
+
 /**
  * First In First Out queue implementation.
  */
 public class FIFOQueue<T> implements Queue<T> {
 
-    @Override
+    // An integer representing the capacity of the queue
+    private int capacity;
+
+    // A linked list that backs the FIFO queue implementation
+    private LinkedList<T> backingLinkedList;
+
+    /**
+     * Class constructor.
+     */
+    public FIFOQueue() {
+        this(1);
+    }
+
+    /**
+     * Class constructor.
+     * 
+     * @param capacity the capacity of the queue.
+     */
+    public FIFOQueue(int capacity) {
+        this.capacity = capacity;
+        this.backingLinkedList = new SinglyLinkedList<>();
+    }
+
+    /**
+     * Class constructor.
+     * 
+     * @param items an array of items to add to the queue.
+     */
+    public FIFOQueue(T[] items) {
+        this.capacity = items.length;
+
+        this.backingLinkedList = new SinglyLinkedList<>(items);
+    }
+
+    /**
+     * Class constructor.
+     * 
+     * @param items a collection of items to add to the queue.
+     */
+    public FIFOQueue(Collection<T> items) {
+        this.capacity = items.size();
+
+        this.backingLinkedList = new SinglyLinkedList<>(items);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void clear() {
-        // TODO Auto-generated method stub
-
+        this.backingLinkedList.clear();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean contains(T item) {
-        // TODO Auto-generated method stub
-        return false;
+        return this.backingLinkedList.contains(item);
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T dequeue() {
-        // TODO Auto-generated method stub
+        if (!this.isEmpty()) {
+            return this.backingLinkedList.poll();
+        }
+
         return null;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public boolean expandCapacity(int additionalCapacity) {
+        this.capacity = this.capacity + additionalCapacity;
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getCapacity() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.capacity;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T getItemAt(int position) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.backingLinkedList.get(position);
     }
 
-    @Override
-    public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(T item) {
+        if (this.hasCapacity(1)) {
+            // there is capacity
+            this.backingLinkedList.add(item);
+
+            return true;
+        }
+
+        return false;
     }
 
-    @Override
-    public void enqueue(T item) {
-        // TODO Auto-generated method stub
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(T[] items) {
+        if (this.hasCapacity(items.length)) {
+            // there is capacity
+            this.backingLinkedList.addAll(items);
+
+            return true;
+        }
+
+        return false;
 
     }
 
-    @Override
-    public void enqueue(T[] items) {
-        // TODO Auto-generated method stub
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(Collection<T> items) {
+        if (this.hasCapacity(items.size())) {
+            // there is capacity
+            this.backingLinkedList.addAll(items);
 
+            return true;
+        }
+
+        return false;
     }
 
-    @Override
-    public void enqueue(Collection<T> items) {
-        // TODO Auto-generated method stub
-
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasCapacity(int numberOfItems) {
+        return !this.isFull() && (numberOfItems <= (this.getCapacity() - this.size()));
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        return this.backingLinkedList.isEmpty();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFull() {
+        return this.getCapacity() == this.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public T peek() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.backingLinkedList.peek();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean remove(T item) {
-        // TODO Auto-generated method stub
-        return false;
+        return this.backingLinkedList.remove(item);
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T removeAt(int position) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.backingLinkedList.removeAt(position);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int size() {
+        return this.backingLinkedList.size();
     }
 
 }
