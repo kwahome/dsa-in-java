@@ -97,6 +97,15 @@ public interface LinkedList<T> extends Iterable<T> {
     void addLast(T[] item);
 
     /**
+     * Removes all of the elements from this list (optional operation).
+     * The list will be empty after this call returns.
+     *
+     * @throws UnsupportedOperationException if the {@code clear} operation
+     *                                       is not supported by this list
+     */
+    void clear();
+
+    /**
      * Check whether an item is contained in the linked list.
      * 
      * This is an O(n) operation.
@@ -265,6 +274,13 @@ public interface LinkedList<T> extends Iterable<T> {
      * @return boolean
      */
     boolean remove(T item);
+
+    /**
+     * Remove an item from the specified position in the index.
+     * 
+     * @return T
+     */
+    T removeAt(int index);
 
     /**
      * Remove the first item from the linked list.

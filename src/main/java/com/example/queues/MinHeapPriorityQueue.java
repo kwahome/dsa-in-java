@@ -13,12 +13,15 @@ public class MinHeapPriorityQueue<T extends Comparable<T>> implements PriorityQu
     // A Heap that backs the priority queue.
     private Heap<T> backingHeap = null;
 
+    // The capacity of the priority queue.
+    private int capacity = 0;
+
     /**
      * Class constructor.
      * 
      */
     public MinHeapPriorityQueue() {
-        this.backingHeap = new BinaryMinHeap<>();
+        this(1);
     }
 
     /**
@@ -28,6 +31,8 @@ public class MinHeapPriorityQueue<T extends Comparable<T>> implements PriorityQu
      */
     public MinHeapPriorityQueue(int capacity) {
         this.backingHeap = new BinaryMinHeap<>(capacity);
+
+        this.capacity = capacity;
     }
 
     /**
@@ -38,6 +43,8 @@ public class MinHeapPriorityQueue<T extends Comparable<T>> implements PriorityQu
     public MinHeapPriorityQueue(T[] items) {
 
         this.backingHeap = new BinaryMinHeap<>(items);
+
+        this.capacity = items.length;
     }
 
     /**
@@ -50,74 +57,157 @@ public class MinHeapPriorityQueue<T extends Comparable<T>> implements PriorityQu
     public MinHeapPriorityQueue(Collection<T> items) {
 
         this.backingHeap = new BinaryMinHeap<>(items);
+
+        this.capacity = items.size();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public void clear() {
         this.backingHeap.clear();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean contains(T item) {
         return this.backingHeap.contains(item);
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T dequeue() {
-        return this.backingHeap.poll();
+        if (!this.isEmpty()) {
+            return this.backingHeap.poll();
+        }
+
+        return null;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(T item) {
+
+        if (this.hasCapacity(1)) {
+            this.backingHeap.insert(item);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(T[] items) {
+        if (this.hasCapacity(items.length)) {
+            this.backingHeap.insert(items);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean enqueue(Collection<T> items) {
+        if (this.hasCapacity(items.size())) {
+            this.backingHeap.insert(items);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean expandCapacity(int additionalCapacity) {
+        this.capacity = this.capacity + additionalCapacity;
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getCapacity() {
-        return this.backingHeap.getCapacity();
+        return this.capacity;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T getItemAt(int position) {
         return this.backingHeap.getItemAt(position);
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasCapacity(int numberOfItems) {
+        return !this.isFull() && (numberOfItems <= (this.getCapacity() - this.size()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int size() {
         return this.backingHeap.size();
     }
 
-    @Override
-    public void enqueue(T item) {
-        this.backingHeap.insert(item);
-    }
-
-    @Override
-    public void enqueue(T[] items) {
-        this.backingHeap.insert(items);
-    }
-
-    @Override
-    public void enqueue(Collection<T> items) {
-        this.backingHeap.insert(items);
-    }
-
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEmpty() {
         return this.backingHeap.isEmpty();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFull() {
+        return this.getCapacity() == this.backingHeap.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public T peek() {
         return this.backingHeap.peek();
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public boolean remove(T item) {
-        return this.backingHeap.remove(item);
+        if (this.backingHeap.remove(item)) {
+
+            this.capacity--;
+
+            return true;
+        }
+
+        return false;
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public T removeAt(int position) {
         return this.backingHeap.removeAt(position);
     }
 
-    @Override
+    /**
+     * {@inheritDoc}
+     */
     public String toString() {
         return this.backingHeap.toString();
     }
