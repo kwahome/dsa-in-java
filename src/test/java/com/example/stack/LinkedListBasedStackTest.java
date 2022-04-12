@@ -124,6 +124,36 @@ public class LinkedListBasedStackTest {
         Assert.assertTrue(stack.isEmpty());
         Assert.assertEquals(null, stack.peek());
 
+        stack = new LinkedListBasedStack<>(5);
+
+        Assert.assertTrue(stack.push(0));
+        Assert.assertTrue(stack.push(1));
+
+        Assert.assertEquals(5, stack.getCapacity());
+        Assert.assertEquals(2, stack.size());
+        Assert.assertTrue(stack.hasCapacity(3));
+        Assert.assertFalse(stack.isFull());
+        Assert.assertFalse(stack.isEmpty());
+        Assert.assertEquals(1, stack.peek().intValue());
+
+        Assert.assertEquals(1, stack.pop().intValue());
+
+        Assert.assertEquals(5, stack.getCapacity());
+        Assert.assertEquals(1, stack.size());
+        Assert.assertTrue(stack.hasCapacity(4));
+        Assert.assertFalse(stack.isFull());
+        Assert.assertFalse(stack.isEmpty());
+        Assert.assertEquals(0, stack.peek().intValue());
+
+        Assert.assertTrue(stack.push(1));
+        Assert.assertTrue(stack.push(2));
+        Assert.assertTrue(stack.push(3));
+
+        Assert.assertEquals(3, stack.pop().intValue());
+        Assert.assertEquals(2, stack.pop().intValue());
+        Assert.assertEquals(1, stack.pop().intValue());
+        Assert.assertEquals(0, stack.pop().intValue());
+
         Integer[] itemsToPush = { 1, 2, 3, 4, 5 };
 
         stack = new LinkedListBasedStack<>(itemsToPush);
