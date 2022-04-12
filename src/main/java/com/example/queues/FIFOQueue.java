@@ -164,7 +164,7 @@ public class FIFOQueue<T> implements Queue<T> {
      * {@inheritDoc}
      */
     public boolean isFull() {
-        return this.getCapacity() == this.size();
+        return this.size() >= this.getCapacity();
     }
 
     /**
