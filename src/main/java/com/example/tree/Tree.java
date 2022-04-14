@@ -40,37 +40,127 @@ public interface Tree<T> extends Iterable<T> {
     int getChildrenCount(TreeNode<T> node) throws IllegalArgumentException;
 
     /**
+     * Returns the degree of a specified node.
+     * 
+     * The degree of a node is the number of
+     * branches of that node.
+     * 
+     * @param node a TreeNode<T>
+     * @return int
+     */
+    int getDegree(TreeNode<T> node);
+
+    /**
+     * Returns the depth of a specified node.
+     * 
+     * The depth of a node is the number of
+     * edges from the root to the node.
+     * 
+     * @param node a TreeNode<T>
+     * @return int
+     */
+    int getDepth(TreeNode<T> node);
+
+    /**
+     * Returns the height of a specified node.
+     * 
+     * The height of a node is the number of edges
+     * from the node to the deepest leaf. In other
+     * words, it's the longest path from a node to
+     * a leaf node.
+     * 
+     * @param node a TreeNode<T>
+     * @return int
+     */
+    int getHeight(TreeNode<T> node);
+
+    /**
      * Return the nodes in a tree in order.
      * 
-     * In order traversal starts from the
-     * left most towards the right through
-     * the current node.
+     * In order traversal is a DFS traversal
+     * that starts from the left most towards
+     * the right through the current node.
      * 
      * @return Iterable<TreeNode<T>>
      */
-    Iterable<TreeNode<T>> getNodesInorder();
+    Iterable<TreeNode<T>> getNodesInOrder();
+
+    /**
+     * Return the nodes in a tree in level order.
+     * 
+     * In order traversal is a BFS traversal
+     * that traverses the tree level by level
+     * starting from the left.
+     * 
+     * @return Iterable<TreeNode<T>>
+     */
+    Iterable<TreeNode<T>> getNodesLevelOrder();
 
     /**
      * Return the nodes in a tree pre order.
      * 
-     * Pre order traversal starts from the
-     * current node then to its left and
-     * finally its right.
+     * Pre order traversal is a DFS traversal
+     * that starts from the current node then
+     * to its left and finally its right.
      * 
      * @return Iterable<TreeNode<T>>
      */
-    Iterable<TreeNode<T>> getNodesPreorder();
+    Iterable<TreeNode<T>> getNodesPreOrder();
 
     /**
      * Return the nodes in a tree post order.
      * 
-     * Post order traversal starts from the
-     * left then to the right and finally
-     * the current node.
+     * Post order traversal is a DFS traversal
+     * that starts from the left then to the
+     * right and finally to the current node.
      * 
      * @return Iterable<TreeNode<T>>
      */
-    Iterable<TreeNode<T>> getNodesPostorder();
+    Iterable<TreeNode<T>> getNodesPostOrder();
+
+    /**
+     * Return the nodes in a tree in reverse order.
+     * 
+     * Reverse in order traversal is a DFS traversal
+     * that starts from the right most towards
+     * the left through the current node.
+     * 
+     * @return Iterable<TreeNode<T>>
+     */
+    Iterable<TreeNode<T>> getNodesReverseInOrder();
+
+    /**
+     * Return the nodes in a tree in reverse level order.
+     * 
+     * In order traversal is a BFS traversal
+     * that traverses the tree level by level
+     * starting from the right.
+     * 
+     * @return Iterable<TreeNode<T>>
+     */
+    Iterable<TreeNode<T>> getNodesReverseLevelOrder();
+
+    /**
+     * Return the nodes in a tree reverse pre order.
+     * 
+     * Reverse pre-order traversal is a DFS traversal
+     * that starts from the current node then to its
+     * right and finally its left.
+     * 
+     * @return Iterable<TreeNode<T>>
+     */
+    Iterable<TreeNode<T>> getNodesReversePreOrder();
+
+    /**
+     * Return the nodes in a tree reverse post order.
+     * 
+     * Reverse post-order traversal is a DFS traversal
+     * that starts from the right then to the left and
+     * finally to the current node.
+     * 
+     * @return Iterable<TreeNode<T>>
+     */
+    Iterable<TreeNode<T>> getNodesReversePostOrder();
 
     /**
      * Return the parent of a specified node or null if none.
@@ -89,13 +179,16 @@ public interface Tree<T> extends Iterable<T> {
     TreeNode<T> getRoot();
 
     /**
-     * Returns a boolean indicating whether a node is a root node of the tree.
+     * Returns the height of a tree.
      * 
-     * @param node TreeNode<T>
-     * @return boolean
-     * @throws IllegalArgumentException
+     * The height of a tree is the number of edges
+     * from the root node or the depth of the
+     * deepest node.
+     * 
+     * @param node a TreeNode<T>
+     * @return int
      */
-    boolean isRoot(TreeNode<T> node) throws IllegalArgumentException;
+    int height();
 
     /**
      * Insert an item into the tree.
@@ -113,6 +206,15 @@ public interface Tree<T> extends Iterable<T> {
     boolean isEmpty();
 
     /**
+     * Returns a boolean indicating whether a node does not have children.
+     * 
+     * @param node (TreeNode<T> node
+     * @return boolean
+     * @throws IllegalArgumentException
+     */
+    boolean isExternal(TreeNode<T> node) throws IllegalArgumentException;
+
+    /**
      * Returns a boolean indicating whether a node has at least one child.
      * 
      * @param node (TreeNode<T> node
@@ -122,13 +224,13 @@ public interface Tree<T> extends Iterable<T> {
     boolean isInternal(TreeNode<T> node) throws IllegalArgumentException;
 
     /**
-     * Returns a boolean indicating whether a node does not have children.
+     * Returns a boolean indicating whether a node is a root node of the tree.
      * 
-     * @param node (TreeNode<T> node
+     * @param node TreeNode<T>
      * @return boolean
      * @throws IllegalArgumentException
      */
-    boolean isExternal(TreeNode<T> node) throws IllegalArgumentException;
+    boolean isRoot(TreeNode<T> node) throws IllegalArgumentException;
 
     /**
      * Returns an iterator.
@@ -146,12 +248,26 @@ public interface Tree<T> extends Iterable<T> {
     public T remove(T item);
 
     /**
-     * Return a boolean indicating whether an item is present in the tree.
+     * Return the tree node containing a specified element or null
+     * if not found.
+     * 
+     * The search proceeds level by level.
      * 
      * @param item to remove from the tree.
-     * @return boolean.
+     * @return TreeNode<T>
      */
-    public boolean search(T item);
+    public TreeNode<T> searchBreadthFirst(T item);
+
+    /**
+     * Return the tree node containing a specified element or null
+     * if not found.
+     * 
+     * The search proceeds to the deepest level first.
+     * 
+     * @param item to remove from the tree.
+     * @return TreeNode<T>
+     */
+    public TreeNode<T> searchDepthFirst(T item);
 
     /**
      * Returns the size of the tree. The size of a tree is the number of
