@@ -46,7 +46,7 @@ public interface BinaryTree<T> extends Tree<T> {
 
     /**
      * Returns a boolean indicating whether the
-     * binary tree parent/internal node has
+     * binary tree parent/internal nodes has
      * either two or no children.
      * 
      * @return boolean
@@ -55,7 +55,7 @@ public interface BinaryTree<T> extends Tree<T> {
 
     /**
      * Returns a boolean indicating whether the
-     * binary tree parent/internal node has
+     * binary tree parent/internal nodes has
      * exactly two child nodes and all the
      * leaf nodes are at the same level.
      * 

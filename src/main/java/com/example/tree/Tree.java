@@ -22,24 +22,6 @@ public interface Tree<T> extends Iterable<T> {
     public boolean contains(T item);
 
     /**
-     * Returns an iterable containing the children of a node.
-     * 
-     * @param node TreeNode<T>
-     * @return Iterable<TreeNode<T>>
-     * @throws IllegalArgumentException
-     */
-    Iterable<TreeNode<T>> getChildren(TreeNode<T> node) throws IllegalArgumentException;
-
-    /**
-     * Returns the count of children nodes of a specified node.
-     * 
-     * @param node Iterator<T>
-     * @return int
-     * @throws IllegalArgumentException
-     */
-    int getChildrenCount(TreeNode<T> node) throws IllegalArgumentException;
-
-    /**
      * Returns the degree of a specified node.
      * 
      * The degree of a node is the number of
@@ -161,15 +143,6 @@ public interface Tree<T> extends Iterable<T> {
      * @return Iterable<TreeNode<T>>
      */
     Iterable<TreeNode<T>> getNodesReversePostOrder();
-
-    /**
-     * Return the parent of a specified node or null if none.
-     * 
-     * @param node TreeNode<T>
-     * @return TreeNode<T>
-     * @throws IllegalArgumentException
-     */
-    TreeNode<T> getParent(TreeNode<T> node) throws IllegalArgumentException;
 
     /**
      * Returns the root node of the tree.

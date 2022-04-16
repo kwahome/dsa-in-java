@@ -1,7 +1,10 @@
 package com.example.linkedlist;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -328,8 +331,7 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
      * {@inheritDoc}
      */
     public Iterator<T> descendingIterator() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getSnapshot(0, true).iterator();
     }
 
     /**
@@ -485,40 +487,14 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
      * {@inheritDoc}
      */
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
-
-            LinkedListNode<T> current = getHead();
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                if (hasNext()) {
-                    T data = current.getNodeData();
-                    current = current.getNextNode();
-                    return data;
-                }
-
-                return null;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Remove not implemented.");
-            }
-
-        };
+        return this.getSnapshot(0, false).iterator();
     }
 
     /**
      * {@inheritDoc}
      */
     public ListIterator<T> listIterator(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getSnapshot(index, false).listIterator();
     }
 
     /**
@@ -720,5 +696,30 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
         this.head = null;
         this.tail = null;
         this.numberOfItems = 0;
+    }
+
+    private List<T> getSnapshot(int startPosition, boolean reverse) {
+        List<T> snapshot = new ArrayList<>();
+
+        LinkedListNode<T> current = this.getHead();
+
+        int position = 0;
+
+        while (current != null) {
+
+            if (position >= startPosition) {
+                snapshot.add(current.getNodeData());
+            }
+
+            current = current.getNextNode();
+
+            position++;
+        }
+
+        if (reverse) {
+            Collections.reverse(snapshot);
+        }
+
+        return snapshot;
     }
 }
