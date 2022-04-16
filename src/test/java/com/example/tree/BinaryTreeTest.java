@@ -197,4 +197,64 @@ public class BinaryTreeTest {
             i++;
         }
     }
+
+    @Test
+    public void shouldSearchABinaryTree() {
+        BinaryTreeNode<Integer> rootNode = new BinaryTreeNode<>(0, 1, 2);
+        BinaryTree<Integer> binaryTree = new BTree<>(rootNode);
+
+        Assert.assertNotNull(binaryTree);
+
+        Assert.assertEquals(3, binaryTree.size());
+        Assert.assertEquals(1, binaryTree.height());
+
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertTrue(binaryTree.isPerfect());
+        Assert.assertEquals(0, binaryTree.getRoot().getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRoot().getChildrenCount());
+        Assert.assertEquals(1, binaryTree.getLeftChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRightChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(0, binaryTree.getDepth(binaryTree.getRoot()));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getLeftChild(binaryTree.getRoot())));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getRightChild(binaryTree.getRoot())));
+        Assert.assertTrue(binaryTree.contains(0));
+        Assert.assertTrue(binaryTree.contains(1));
+        Assert.assertTrue(binaryTree.contains(2));
+        Assert.assertFalse(binaryTree.contains(3));
+
+        TraversalOrder[] traversalStrategies = {
+                TraversalOrder.IN_ORDER,
+                TraversalOrder.LEVEL_ORDER,
+                TraversalOrder.PRE_ORDER,
+                TraversalOrder.POST_ORDER,
+                TraversalOrder.REVERSE_IN_ORDER,
+                TraversalOrder.REVERSE_LEVEL_ORDER,
+                TraversalOrder.REVERSE_PRE_ORDER,
+                TraversalOrder.REVERSE_POST_ORDER,
+        };
+
+        Integer[] itemsToSearch = { 0, 1, 2, 3, 4, -1, 2, 0, 1 };
+
+        Integer[] expectedResults = { 0, 1, 2, null, null, null, 2, 0, 1 };
+
+        for (TraversalOrder strategy : traversalStrategies) {
+            System.out.println(strategy);
+            for (int index = 0; index < itemsToSearch.length; index++) {
+                Integer searchKey = itemsToSearch[index];
+
+                System.out.println(searchKey);
+
+                TreeNode<Integer> result = binaryTree.search(searchKey, strategy);
+
+                if (result == null) {
+                    Assert.assertEquals(expectedResults[index], result);
+                } else {
+                    Assert.assertEquals(expectedResults[index], result.getData());
+                }
+            }
+        }
+    }
 }

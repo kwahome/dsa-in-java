@@ -226,10 +226,11 @@ public interface Tree<T> extends Iterable<T> {
      * 
      * The search proceeds level by level.
      * 
-     * @param item to remove from the tree.
+     * @param item           to remove from the tree.
+     * @param traversalOrder the order of traversal
      * @return TreeNode<T>
      */
-    public TreeNode<T> searchBreadthFirst(T item);
+    public TreeNode<T> search(T item, TraversalOrder traversalOrder);
 
     /**
      * Return the tree node containing a specified element or null
@@ -237,10 +238,12 @@ public interface Tree<T> extends Iterable<T> {
      * 
      * The search proceeds to the deepest level first.
      * 
-     * @param item to remove from the tree.
+     * @param startNode      the node at which the search starts
+     * @param item           to remove from the tree.
+     * @param traversalOrder the order of traversal
      * @return TreeNode<T>
      */
-    public TreeNode<T> searchDepthFirst(T item);
+    public TreeNode<T> search(TreeNode<T> startNode, T item, TraversalOrder traversalOrder);
 
     /**
      * Returns the size of the tree. The size of a tree is the number of
