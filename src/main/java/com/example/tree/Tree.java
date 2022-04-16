@@ -22,15 +22,15 @@ public interface Tree<T> extends Iterable<T> {
     public boolean contains(T item);
 
     /**
-     * Returns the degree of a specified node.
+     * Returns the degree of the tree.
      * 
-     * The degree of a node is the number of
-     * branches of that node.
+     * The degree of a tree is the maximum
+     * degree of a node among all the nodes
+     * in the tree.
      * 
-     * @param node a TreeNode<T>
      * @return int
      */
-    int getDegree(TreeNode<T> node);
+    int degree();
 
     /**
      * Returns the depth of a specified node.

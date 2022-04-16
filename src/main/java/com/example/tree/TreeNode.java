@@ -4,7 +4,7 @@ package com.example.tree;
  * Represents a node of a tree data-structure.
  */
 public abstract class TreeNode<T> {
-    
+
     // The data of this tree node.
     private T data;
 
@@ -54,6 +54,15 @@ public abstract class TreeNode<T> {
      */
     public T getData() {
         return this.data;
+    }
+    
+    /**
+     * Returns the number of children of the node.
+     * 
+     * @return int
+     */
+    public int getDegree() {
+        return this.getChildrenCount();
     }
 
     /**

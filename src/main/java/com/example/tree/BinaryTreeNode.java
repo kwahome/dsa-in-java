@@ -108,4 +108,18 @@ public class BinaryTreeNode<T> extends TreeNode<T> {
     public boolean isLeafNode() {
         return !this.hasLeftChild() && !this.hasRightChild();
     }
+
+    /**
+     * Sets the left child of the node.
+     */
+    public void setLeftChild(BinaryTreeNode<T> child) {
+        this.leftChild = child;
+    }
+
+    /**
+     * Sets the right child of the node.
+     */
+    public void setRightChild(BinaryTreeNode<T> child) {
+        this.rightChild = child;
+    }
 }

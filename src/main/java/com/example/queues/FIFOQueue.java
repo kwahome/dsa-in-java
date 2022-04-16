@@ -114,7 +114,7 @@ public class FIFOQueue<T> implements Queue<T> {
             return true;
         }
 
-        return false;
+        throw new IllegalArgumentException("The queue is out of capacity");
     }
 
     /**
@@ -128,7 +128,7 @@ public class FIFOQueue<T> implements Queue<T> {
             return true;
         }
 
-        return false;
+        throw new IllegalArgumentException("The queue is out of capacity");
 
     }
 
@@ -143,7 +143,7 @@ public class FIFOQueue<T> implements Queue<T> {
             return true;
         }
 
-        return false;
+        throw new IllegalArgumentException("The queue is out of capacity");
     }
 
     /**
