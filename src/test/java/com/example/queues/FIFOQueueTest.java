@@ -82,7 +82,11 @@ public class FIFOQueueTest {
         Assert.assertTrue(queue.contains(1));
 
         // try to enqueue when queue is full
-        Assert.assertFalse(queue.enqueue(2));
+        try {
+            Assert.assertFalse(queue.enqueue(2));
+        } catch (IllegalArgumentException exception) {
+
+        }
 
         Assert.assertEquals(1, queue.getCapacity());
         Assert.assertFalse(queue.hasCapacity(1));

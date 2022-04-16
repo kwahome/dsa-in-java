@@ -71,6 +71,21 @@ public class BTree<T> implements BinaryTree<T> {
     /**
      * {@inheritDoc}
      */
+    public int degree() {
+        Iterator<TreeNode<T>> nodesIterator = this.getNodesInOrder().iterator();
+
+        int maxNodeDegree = -1;
+
+        while (nodesIterator.hasNext()) {
+            maxNodeDegree = Math.max(maxNodeDegree, nodesIterator.next().getDegree());
+        }
+
+        return maxNodeDegree;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getChildrenCount(TreeNode<T> node) throws IllegalArgumentException {
         BinaryTreeNode<T> bTreeNode = (BinaryTreeNode<T>) node;
 
@@ -78,14 +93,6 @@ public class BTree<T> implements BinaryTree<T> {
             return (bTreeNode.hasLeftChild() ? 1 : 0) + (bTreeNode.hasRightChild() ? 1 : 0);
         }
 
-        return 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getDegree(TreeNode<T> node) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -113,16 +120,15 @@ public class BTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public int getHeight(TreeNode<T> node) {
-
-        if (this.isEmpty() || node == null) {
-            return -1;
-        }
-
         // cast into binary tree node
         BinaryTreeNode<T> bTreeNode = (BinaryTreeNode<T>) node;
 
+        if (node == null) {
+            return -1;
+        }
+
         // compute the max height/depth of each subtree
-        return Math.max(this.getHeight(bTreeNode.getLeftChild()), this.getHeight(bTreeNode.getRightChild())) + 1;
+        return 1 + Math.max(this.getHeight(bTreeNode.getLeftChild()), this.getHeight(bTreeNode.getRightChild()));
     }
 
     /**
@@ -141,6 +147,13 @@ public class BTree<T> implements BinaryTree<T> {
         BinaryTreeNode<T> bTreeNode = (BinaryTreeNode<T>) node;
 
         return (bTreeNode != null) ? bTreeNode.getRightChild() : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMaxDepth() {
+        return this.getHeight(this.getRoot());
     }
 
     /**
@@ -445,7 +458,49 @@ public class BTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public boolean insert(T item) {
-        // TODO Auto-generated method stub
+        // We want to into the left most slot.
+
+        if (this.isEmpty()) {
+            // Tree is empty
+            // We create the root node.
+            this.root = new BinaryTreeNode<>(item, null);
+
+            this.numberOfNodes++;
+
+            return true;
+        }
+
+        // We traverse the tree level by level from the leftmost
+        // until we find an empty slot
+
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
+
+        queue.enqueue((BinaryTreeNode<T>) this.getRoot());
+
+        while (!queue.isEmpty()) {
+            BinaryTreeNode<T> current = queue.dequeue();
+
+            if (!current.hasLeftChild()) {
+                current.setLeftChild(new BinaryTreeNode<>(item, current));
+
+                this.numberOfNodes++;
+
+                return true;
+            } else {
+                queue.enqueue(current.getLeftChild());
+            }
+
+            if (!current.hasRightChild()) {
+                current.setRightChild(new BinaryTreeNode<>(item, current));
+
+                this.numberOfNodes++;
+
+                return true;
+            } else {
+                queue.enqueue(current.getRightChild());
+            }
+        }
+
         return false;
     }
 
@@ -485,9 +540,33 @@ public class BTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public boolean isFull() {
-        boolean full = true;
 
-        return full;
+        if (this.isEmpty() || this.isPerfect()) {
+            return true;
+        }
+
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
+
+        queue.enqueue((BinaryTreeNode<T>) this.getRoot());
+
+        while (!queue.isEmpty()) {
+            BinaryTreeNode<T> current = queue.dequeue();
+
+            if (current.isInternal() && current.hasChildren()
+                    && (0 < current.getChildrenCount() && current.getChildrenCount() < 2)) {
+                return false;
+            }
+
+            if (current.hasLeftChild()) {
+                queue.enqueue(current.getLeftChild());
+            }
+
+            if (current.hasRightChild()) {
+                queue.enqueue(current.getRightChild());
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -501,7 +580,7 @@ public class BTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public boolean isPerfect() {
-        return this.isPerfectSubTree((BinaryTreeNode<T>) this.getRoot(), this.getDepth(this.getRoot()), 0);
+        return this.isPerfectSubTree((BinaryTreeNode<T>) this.getRoot(), this.getMaxDepth(), 0);
 
     }
 
@@ -597,12 +676,12 @@ public class BTree<T> implements BinaryTree<T> {
         }
 
         // if both children are null; check the levels
-        if (subTreeRoot.getLeftChild() == null && subTreeRoot.getRightChild() == null) {
-            return depth + 1 == level;
+        if (!subTreeRoot.hasChildren()) {
+            return depth == level;
         }
 
         // if either child is null, the tree is not perfect
-        if (subTreeRoot.getLeftChild() == null || subTreeRoot.getRightChild() == null) {
+        if (!subTreeRoot.hasLeftChild() || !subTreeRoot.hasRightChild()) {
             return false;
         }
 
@@ -620,7 +699,7 @@ public class BTree<T> implements BinaryTree<T> {
         // Level by level traversal
         // From the leftmost to the rightmost
 
-        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(Math.max(1, this.size()));
 
         queue.enqueue(startNode);
 

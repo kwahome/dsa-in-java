@@ -26,6 +26,15 @@ public interface BinaryTree<T> extends Tree<T> {
     BinaryTreeNode<T> getRightChild(TreeNode<T> node) throws IllegalArgumentException;
 
     /**
+     * Returns the number of nodes from the root
+     * down to the furthest leaf node. In other
+     * words, returns the height of the root node.
+     * 
+     * @return
+     */
+    int getMaxDepth();
+
+    /**
      * Returns a boolean indicating whether the
      * height of the left and right subtree of
      * any node differ by not more than 1.
