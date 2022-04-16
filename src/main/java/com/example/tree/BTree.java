@@ -55,15 +55,17 @@ public class BTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public boolean contains(T item) {
-        Iterator<TreeNode<T>> nodesIterator = this.getNodesInOrder().iterator();
+        // Iterator<TreeNode<T>> nodesIterator = this.getNodesInOrder().iterator();
 
-        while (nodesIterator.hasNext()) {
-            if (nodesIterator.next().getData() == item) {
-                return true;
-            }
-        }
+        // while (nodesIterator.hasNext()) {
+        // if (nodesIterator.next().getData() == item) {
+        // return true;
+        // }
+        // }
 
-        return false;
+        // return false;
+
+        return this.search(item, TraversalOrder.LEVEL_ORDER) != null;
     }
 
     /**
@@ -189,7 +191,7 @@ public class BTree<T> implements BinaryTree<T> {
 
         List<TreeNode<T>> snapshot = new ArrayList<>(this.size());
 
-        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>();
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
 
         queue.enqueue((BinaryTreeNode<T>) this.getRoot());
 
@@ -230,6 +232,8 @@ public class BTree<T> implements BinaryTree<T> {
 
         while (!nodes.isEmpty()) {
             BinaryTreeNode<T> current = nodes.pop();
+
+            snapshot.add(current);
 
             // Stack is a LIFO queue
             // So push right child first then left child
@@ -329,7 +333,7 @@ public class BTree<T> implements BinaryTree<T> {
 
         List<TreeNode<T>> snapshot = new ArrayList<>(this.size());
 
-        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>();
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
 
         queue.enqueue((BinaryTreeNode<T>) this.getRoot());
 
@@ -368,6 +372,8 @@ public class BTree<T> implements BinaryTree<T> {
 
         while (!nodes.isEmpty()) {
             BinaryTreeNode<T> current = nodes.pop();
+
+            snapshot.add(current);
 
             // Stack is a LIFO queue
             // So push left child first then right child
@@ -525,16 +531,49 @@ public class BTree<T> implements BinaryTree<T> {
     /**
      * {@inheritDoc}
      */
-    public TreeNode<T> searchBreadthFirst(T item) {
-        // TODO Auto-generated method stub
-        return null;
+    public TreeNode<T> search(T item, TraversalOrder traversalOrder) {
+        return this.search((BinaryTreeNode<T>) this.getRoot(), item, traversalOrder);
     }
 
     /**
      * {@inheritDoc}
      */
-    public TreeNode<T> searchDepthFirst(T item) {
-        return this.recursiveDFS((BinaryTreeNode<T>) this.getRoot(), item, DFSOrder.IN_ORDER, false);
+    public TreeNode<T> search(TreeNode<T> searchStartNode, T item, TraversalOrder traversalOrder) {
+
+        if (item != null) {
+            BinaryTreeNode<T> bTreeSearchStartNode = (BinaryTreeNode<T>) searchStartNode;
+
+            switch (traversalOrder) {
+                case IN_ORDER:
+                    return this.dfsInOrder(bTreeSearchStartNode, item, false);
+
+                case LEVEL_ORDER:
+                    return this.bfs(bTreeSearchStartNode, item, false);
+
+                case PRE_ORDER:
+                    return this.dfsPreOrder(bTreeSearchStartNode, item, false);
+
+                case POST_ORDER:
+                    return this.dfsPostOrder(bTreeSearchStartNode, item, false);
+
+                case REVERSE_IN_ORDER:
+                    return this.dfsInOrder(bTreeSearchStartNode, item, true);
+
+                case REVERSE_LEVEL_ORDER:
+                    return this.bfs(bTreeSearchStartNode, item, true);
+
+                case REVERSE_PRE_ORDER:
+                    return this.dfsPreOrder(bTreeSearchStartNode, item, true);
+
+                case REVERSE_POST_ORDER:
+                    return this.dfsPostOrder(bTreeSearchStartNode, item, true);
+
+                default:
+                    return null;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -574,36 +613,49 @@ public class BTree<T> implements BinaryTree<T> {
     /**
      * Recursive implementation of the Breadth First search
      * 
-     * @param node BinaryTreeNode<T>
+     * @param T item<T>
      * @return TreeNode<T>
      */
-    private BinaryTreeNode<T> recursiveBFS(BinaryTreeNode<T> node) {
-        return null;
-    }
+    private BinaryTreeNode<T> bfs(BinaryTreeNode<T> startNode, T item, boolean reverse) {
+        // Level by level traversal
+        // From the leftmost to the rightmost
 
-    /**
-     * Recursive implementation of the Depth First Search.
-     * 
-     * @param node           BinaryTreeNode<T>
-     * @param item           T
-     * @param traversalOrder DFSOrder
-     * @param reverse        boolean
-     * @return BinaryTreeNode<T>
-     */
-    private BinaryTreeNode<T> recursiveDFS(BinaryTreeNode<T> node, T item, DFSOrder traversalOrder, boolean reverse) {
-        if (node != null) {
-            switch (traversalOrder) {
-                case IN_ORDER:
-                    return this.searchInOrder(node, item, reverse);
+        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
 
-                case PRE_ORDER:
-                    return this.searchPreOrder(node, item, reverse);
+        queue.enqueue(startNode);
 
-                case POST_ORDER:
-                    return this.searchPostOrder(node, item, reverse);
+        while (!queue.isEmpty()) {
+            BinaryTreeNode<T> current = queue.dequeue();
 
-                default:
-                    break;
+            if (current != null) {
+
+                if (current.getData().equals(item)) {
+                    return current;
+                }
+
+                if (reverse) {
+                    // We are using a FIFO queue
+                    // We want to enqueue the right child before the left
+                    // To ensure right subtree is traversed before the left
+                    if (current.hasRightChild()) {
+                        queue.enqueue(current.getRightChild());
+                    }
+
+                    if (current.hasLeftChild()) {
+                        queue.enqueue(current.getLeftChild());
+                    }
+                } else {
+                    // We are using a FIFO queue
+                    // We want to enqueue the left child before the right
+                    // To ensure left subtree is traversed before the right
+                    if (current.hasLeftChild()) {
+                        queue.enqueue(current.getLeftChild());
+                    }
+
+                    if (current.hasRightChild()) {
+                        queue.enqueue(current.getRightChild());
+                    }
+                }
             }
         }
 
@@ -618,47 +670,61 @@ public class BTree<T> implements BinaryTree<T> {
      * @param reverse   boolean indicating whether the search should be in reverse.
      * @return BinaryTreeNode<T>
      */
-    private BinaryTreeNode<T> searchInOrder(BinaryTreeNode<T> startNode, T item, boolean reverse) {
-        BinaryTreeNode<T> itemNode = null;
+    private BinaryTreeNode<T> dfsInOrder(BinaryTreeNode<T> startNode, T item, boolean reverse) {
 
-        if (startNode == null) {
-            return itemNode;
+        Stack<BinaryTreeNode<T>> visit = new LinkedListBasedStack<>(this.size());
+
+        BinaryTreeNode<T> current = (BinaryTreeNode<T>) this.getRoot();
+
+        while (!visit.isEmpty() || current != null) {
+            if (reverse) {
+                // R -> N -> L
+                if (current != null) {
+
+                    if (current.getData().equals(item)) {
+                        return current;
+                    }
+
+                    visit.push(current);
+
+                    current = current.getRightChild();
+
+                } else {
+
+                    BinaryTreeNode<T> node = visit.pop();
+
+                    if (node.getData().equals(item)) {
+                        return node;
+                    }
+
+                    current = node.getLeftChild();
+                }
+            } else {
+                // L -> N -> R
+                if (current != null) {
+
+                    if (current.getData().equals(item)) {
+                        return current;
+                    }
+
+                    visit.push(current);
+
+                    current = current.getLeftChild();
+
+                } else {
+
+                    BinaryTreeNode<T> node = visit.pop();
+
+                    if (node.getData().equals(item)) {
+                        return node;
+                    }
+
+                    current = node.getRightChild();
+                }
+            }
         }
 
-        if (reverse) {
-            // R -> N -> L
-
-            // go deep to the right first until we hit a leaf node
-            this.searchInOrder(startNode.getRightChild(), item, reverse);
-
-            if (startNode.getData().equals(item)) {
-                // we have found our node
-                itemNode = startNode;
-            }
-
-            // go deep to the left first until we hit a leaf node
-            this.searchInOrder(startNode.getLeftChild(), item, reverse);
-        } else {
-            // L -> N -> R
-
-            // go deep to the left first until we hit a leaf node
-            this.searchInOrder(startNode.getLeftChild(), item, reverse);
-
-            // System.out.println(startNode.getData());
-            // System.out.println(startNode.getData().equals(item));
-            // System.out.println();
-
-            if (startNode.getData().equals(item)) {
-                itemNode = startNode;
-            }
-
-            // go deep to the right first until we hit a leaf node
-            this.searchInOrder(startNode.getRightChild(), item, reverse);
-        }
-
-        System.out.println(itemNode);
-
-        return itemNode;
+        return null;
     }
 
     /**
@@ -669,30 +735,54 @@ public class BTree<T> implements BinaryTree<T> {
      * @param reverse boolean indicating whether the search should be in reverse.
      * @return BinaryTreeNode<T>
      */
-    private BinaryTreeNode<T> searchPreOrder(BinaryTreeNode<T> node, T item, boolean reverse) {
-        if (node != null) {
-            if (node.getData().equals(item)) {
-                // we have found our node
-                return node;
-            }
+    private BinaryTreeNode<T> dfsPreOrder(BinaryTreeNode<T> node, T item, boolean reverse) {
 
+        Stack<BinaryTreeNode<T>> visit = new LinkedListBasedStack<>(this.size());
+
+        visit.push((BinaryTreeNode<T>) this.getRoot());
+
+        while (!visit.isEmpty()) {
             if (reverse) {
                 // N -> R -> L
 
-                // go deep to the right first until we hit a leaf node
-                this.searchPreOrder(node.getRightChild(), item, reverse);
+                BinaryTreeNode<T> current = visit.pop();
 
-                // go deep to the left first until we hit a leaf node
-                this.searchPreOrder(node.getLeftChild(), item, reverse);
+                if (current != null && current.getData().equals(item)) {
+                    return current;
+                }
+
+                // Stack is a LIFO queue
+                // So push right child first then left child
+                // So that left subtree is traversed first
+
+                if (current.hasLeftChild()) {
+                    visit.push(current.getLeftChild());
+                }
+
+                if (current.hasRightChild()) {
+                    visit.push(current.getRightChild());
+                }
 
             } else {
                 // N -> L -> R
 
-                // go deep to the left first until we hit a leaf node
-                this.searchPreOrder(node.getLeftChild(), item, reverse);
+                BinaryTreeNode<T> current = visit.pop();
 
-                // go deep to the right first until we hit a leaf node
-                this.searchPreOrder(node.getRightChild(), item, reverse);
+                if (current != null && current.getData().equals(item)) {
+                    return current;
+                }
+
+                // Stack is a LIFO queue
+                // So push right child first then left child
+                // So that left subtree is traversed first
+
+                if (current.hasRightChild()) {
+                    visit.push(current.getRightChild());
+                }
+
+                if (current.hasLeftChild()) {
+                    visit.push(current.getLeftChild());
+                }
             }
         }
 
@@ -707,34 +797,53 @@ public class BTree<T> implements BinaryTree<T> {
      * @param reverse boolean indicating whether the search should be in reverse.
      * @return BinaryTreeNode<T>
      */
-    private BinaryTreeNode<T> searchPostOrder(BinaryTreeNode<T> node, T item, boolean reverse) {
-        if (node != null) {
+    private BinaryTreeNode<T> dfsPostOrder(BinaryTreeNode<T> node, T item, boolean reverse) {
+        Stack<BinaryTreeNode<T>> visit = new LinkedListBasedStack<>(this.size());
+        Stack<BinaryTreeNode<T>> reverseVisit = new LinkedListBasedStack<>(this.size());
+
+        visit.push((BinaryTreeNode<T>) this.getRoot());
+
+        while (!visit.isEmpty()) {
+
             if (reverse) {
                 // R -> L -> N
 
-                // go deep to the right first until we hit a leaf node
-                this.searchPostOrder(node.getRightChild(), item, reverse);
+                BinaryTreeNode<T> current = visit.pop();
 
-                // go deep to the left first until we hit a leaf node
-                this.searchPostOrder(node.getLeftChild(), item, reverse);
+                if (current != null && current.getData().equals(item)) {
+                    return current;
+                }
+
+                reverseVisit.push(current);
+
+                if (current.hasRightChild()) {
+                    visit.push(current.getRightChild());
+                }
+
+                if (current.hasLeftChild()) {
+                    visit.push(current.getLeftChild());
+                }
 
             } else {
-                // N -> R -> L
 
-                // go deep to the left first until we hit a leaf node
-                this.searchPostOrder(node.getLeftChild(), item, reverse);
+                BinaryTreeNode<T> current = visit.pop();
 
-                // go deep to the right first until we hit a leaf node
-                this.searchPostOrder(node.getRightChild(), item, reverse);
+                if (current != null && current.getData().equals(item)) {
+                    return current;
+                }
 
+                reverseVisit.push(current);
+
+                if (current.hasLeftChild()) {
+                    visit.push(current.getLeftChild());
+                }
+
+                if (current.hasRightChild()) {
+                    visit.push(current.getRightChild());
+                }
             }
 
-            if (node.getData().equals(item)) {
-                // we have found our node
-                return node;
-            }
         }
-
         return null;
     }
 }
