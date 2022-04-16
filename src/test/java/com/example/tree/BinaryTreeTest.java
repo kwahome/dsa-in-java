@@ -2,7 +2,9 @@ package com.example.tree;
 
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.Assert;
 
@@ -124,81 +126,19 @@ public class BinaryTreeTest {
         Assert.assertTrue(binaryTree.contains(2));
         Assert.assertFalse(binaryTree.contains(3));
 
-        // Assert traversal
-        // 1. In-Order
-        Integer[] expectedInOrder = { 1, 0, 2 };
-        Iterator<TreeNode<Integer>> inOrderIterator = binaryTree.getNodesInOrder().iterator();
-        int i = 0;
-        while (inOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedInOrder[i], inOrderIterator.next().getData());
+        Map<TraversalOrder, Integer[]> testScenarios = new HashMap<>();
 
-            i++;
-        }
+        testScenarios.put(TraversalOrder.LEVEL_ORDER, new Integer[] { 0, 1, 2 });
+        testScenarios.put(TraversalOrder.REVERSE_LEVEL_ORDER, new Integer[] { 0, 2, 1 });
+        testScenarios.put(TraversalOrder.IN_ORDER, new Integer[] { 1, 0, 2 });
+        testScenarios.put(TraversalOrder.REVERSE_IN_ORDER, new Integer[] { 2, 0, 1 });
+        testScenarios.put(TraversalOrder.PRE_ORDER, new Integer[] { 0, 1, 2 });
+        testScenarios.put(TraversalOrder.REVERSE_PRE_ORDER, new Integer[] { 0, 2, 1 });
+        testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 1, 2, 0 });
+        testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 2, 1, 0 });
 
-        Integer[] expectedReverseInOrder = { 2, 0, 1 };
-        Iterator<TreeNode<Integer>> reverseInOrderIterator = binaryTree.getNodesReverseInOrder().iterator();
-        i = 0;
-        while (reverseInOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReverseInOrder[i], reverseInOrderIterator.next().getData());
-
-            i++;
-        }
-
-        // 2. Pre-Order
-        Integer[] expectedPreOrder = { 0, 1, 2 };
-        Iterator<TreeNode<Integer>> preOrderIterator = binaryTree.getNodesPreOrder().iterator();
-        i = 0;
-        while (preOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedPreOrder[i], preOrderIterator.next().getData());
-
-            i++;
-        }
-
-        Integer[] expectedReversePreOrder = { 0, 2, 1 };
-        Iterator<TreeNode<Integer>> reversePreOrderIterator = binaryTree.getNodesReversePreOrder().iterator();
-        i = 0;
-        while (reversePreOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReversePreOrder[i], reversePreOrderIterator.next().getData());
-
-            i++;
-        }
-
-        // 3. Post-order
-        Integer[] expectedPostOrder = { 1, 2, 0 };
-        Iterator<TreeNode<Integer>> postOrderIterator = binaryTree.getNodesPostOrder().iterator();
-        i = 0;
-        while (postOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedPostOrder[i], postOrderIterator.next().getData());
-
-            i++;
-        }
-
-        Integer[] expectedReversePostOrder = { 2, 1, 0 };
-        Iterator<TreeNode<Integer>> reversePostOrderIterator = binaryTree.getNodesReversePostOrder().iterator();
-        i = 0;
-        while (reversePostOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReversePostOrder[i], reversePostOrderIterator.next().getData());
-
-            i++;
-        }
-
-        // 4. Level-order
-        Integer[] expectedLevelOrder = { 0, 1, 2 };
-        Iterator<TreeNode<Integer>> levelOrderIterator = binaryTree.getNodesLevelOrder().iterator();
-        i = 0;
-        while (levelOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedLevelOrder[i], levelOrderIterator.next().getData());
-
-            i++;
-        }
-
-        Integer[] expectedReverseLevelOrder = { 0, 2, 1 };
-        Iterator<TreeNode<Integer>> reverseLevelOrderIterator = binaryTree.getNodesReverseLevelOrder().iterator();
-        i = 0;
-        while (reverseLevelOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReverseLevelOrder[i], reverseLevelOrderIterator.next().getData());
-
-            i++;
+        for (Map.Entry<TraversalOrder, Integer[]> testScenario : testScenarios.entrySet()) {
+            assertCorrectTraversal(binaryTree, testScenario.getKey(), testScenario.getValue());
         }
     }
 
@@ -339,81 +279,188 @@ public class BinaryTreeTest {
         Assert.assertTrue(binaryTree.isPerfect());
         Assert.assertTrue(binaryTree.contains(6));
 
-        // Assert traversal
-        // 1. In-Order
-        Integer[] expectedInOrder = { 3, 1, 4, 0, 5, 2, 6 };
-        Iterator<TreeNode<Integer>> inOrderIterator = binaryTree.getNodesInOrder().iterator();
+        Map<TraversalOrder, Integer[]> testScenarios = new HashMap<>();
+
+        testScenarios.put(TraversalOrder.LEVEL_ORDER, new Integer[] { 0, 1, 2, 3, 4, 5, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_LEVEL_ORDER, new Integer[] { 0, 2, 1, 6, 5, 4, 3 });
+        testScenarios.put(TraversalOrder.IN_ORDER, new Integer[] { 3, 1, 4, 0, 5, 2, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_IN_ORDER, new Integer[] { 6, 2, 5, 0, 4, 1, 3 });
+        testScenarios.put(TraversalOrder.PRE_ORDER, new Integer[] { 0, 1, 3, 4, 2, 5, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_PRE_ORDER, new Integer[] { 0, 2, 6, 5, 1, 4, 3 });
+        testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 3, 4, 1, 5, 6, 2, 0 });
+        testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 6, 5, 2, 4, 3, 1, 0 });
+
+        for (Map.Entry<TraversalOrder, Integer[]> testScenario : testScenarios.entrySet()) {
+            assertCorrectTraversal(binaryTree, testScenario.getKey(), testScenario.getValue());
+        }
+    }
+
+    @Test
+    public void shouldRemoveFromABinaryTree() {
+        BinaryTree<Integer> binaryTree = new BTree<>();
+        Assert.assertNotNull(binaryTree);
+
+        Assert.assertEquals(0, binaryTree.size());
+        Assert.assertEquals(-1, binaryTree.height());
+        Assert.assertEquals(-1, binaryTree.degree());
+
+        Assert.assertTrue(binaryTree.isEmpty());
+
+        Assert.assertNull(binaryTree.remove(0));
+
+        BinaryTreeNode<Integer> rootNode = new BinaryTreeNode<>(0, 1, 2);
+        binaryTree = new BTree<>(rootNode);
+
+        Assert.assertNotNull(binaryTree);
+
+        Assert.assertEquals(3, binaryTree.size());
+        Assert.assertEquals(1, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertTrue(binaryTree.isPerfect());
+        Assert.assertEquals(0, binaryTree.getRoot().getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRoot().getChildrenCount());
+        Assert.assertEquals(1, binaryTree.getLeftChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRightChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(0, binaryTree.getDepth(binaryTree.getRoot()));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getLeftChild(binaryTree.getRoot())));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getRightChild(binaryTree.getRoot())));
+        Assert.assertTrue(binaryTree.contains(0));
+        Assert.assertTrue(binaryTree.contains(1));
+        Assert.assertTrue(binaryTree.contains(2));
+        Assert.assertFalse(binaryTree.contains(3));
+
+        Assert.assertNull(binaryTree.remove(0));
+
+        Assert.assertEquals(2, binaryTree.size());
+        Assert.assertEquals(1, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertTrue(binaryTree.isPerfect());
+        Assert.assertEquals(0, binaryTree.getRoot().getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRoot().getChildrenCount());
+        Assert.assertEquals(1, binaryTree.getLeftChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(2, binaryTree.getRightChild(binaryTree.getRoot()).getData().intValue());
+        Assert.assertEquals(0, binaryTree.getDepth(binaryTree.getRoot()));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getLeftChild(binaryTree.getRoot())));
+        Assert.assertEquals(1, binaryTree.getDepth(binaryTree.getRightChild(binaryTree.getRoot())));
+        Assert.assertFalse(binaryTree.contains(0));
+        Assert.assertTrue(binaryTree.contains(1));
+        Assert.assertTrue(binaryTree.contains(2));
+        Assert.assertFalse(binaryTree.contains(3));
+
+        Assert.assertTrue(binaryTree.insert(3));
+
+        Assert.assertEquals(4, binaryTree.size());
+        Assert.assertEquals(2, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertFalse(binaryTree.isFull());
+        Assert.assertFalse(binaryTree.isPerfect());
+        Assert.assertTrue(binaryTree.contains(3));
+
+        Assert.assertTrue(binaryTree.insert(4));
+
+        Assert.assertEquals(5, binaryTree.size());
+        Assert.assertEquals(2, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertFalse(binaryTree.isPerfect());
+        Assert.assertTrue(binaryTree.contains(4));
+
+        Assert.assertTrue(binaryTree.insert(5));
+
+        Assert.assertEquals(6, binaryTree.size());
+        Assert.assertEquals(2, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertFalse(binaryTree.isFull());
+        Assert.assertFalse(binaryTree.isPerfect());
+        Assert.assertTrue(binaryTree.contains(5));
+
+        Assert.assertTrue(binaryTree.insert(6));
+
+        Assert.assertEquals(7, binaryTree.size());
+        Assert.assertEquals(2, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertTrue(binaryTree.isPerfect());
+        Assert.assertTrue(binaryTree.contains(6));
+
+        Map<TraversalOrder, Integer[]> testScenarios = new HashMap<>();
+
+        testScenarios.put(TraversalOrder.LEVEL_ORDER, new Integer[] { 0, 1, 2, 3, 4, 5, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_LEVEL_ORDER, new Integer[] { 0, 2, 1, 6, 5, 4, 3 });
+        testScenarios.put(TraversalOrder.IN_ORDER, new Integer[] { 3, 1, 4, 0, 5, 2, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_IN_ORDER, new Integer[] { 6, 2, 5, 0, 4, 1, 3 });
+        testScenarios.put(TraversalOrder.PRE_ORDER, new Integer[] { 0, 1, 3, 4, 2, 5, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_PRE_ORDER, new Integer[] { 0, 2, 6, 5, 1, 4, 3 });
+        testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 3, 4, 1, 5, 6, 2, 0 });
+        testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 6, 5, 2, 4, 3, 1, 0 });
+
+        for (Map.Entry<TraversalOrder, Integer[]> testScenario : testScenarios.entrySet()) {
+            assertCorrectTraversal(binaryTree, testScenario.getKey(), testScenario.getValue());
+        }
+    }
+
+    private <T> void assertCorrectTraversal(BinaryTree<T> binaryTree, TraversalOrder traversalOrder, T[] expected) {
+        Iterator<TreeNode<T>> nodesIterator = getTreeNodesIterator(binaryTree, traversalOrder);
+
         int i = 0;
-        while (inOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedInOrder[i], inOrderIterator.next().getData());
+
+        while (nodesIterator.hasNext()) {
+            Assert.assertEquals(expected[i], nodesIterator.next().getData());
 
             i++;
         }
+    }
 
-        Integer[] expectedReverseInOrder = { 6, 2, 5, 0, 4, 1, 3 };
-        Iterator<TreeNode<Integer>> reverseInOrderIterator = binaryTree.getNodesReverseInOrder().iterator();
-        i = 0;
-        while (reverseInOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReverseInOrder[i], reverseInOrderIterator.next().getData());
+    private <T> Iterator<TreeNode<T>> getTreeNodesIterator(BinaryTree<T> bTree, TraversalOrder traversalOrder) {
+        switch (traversalOrder) {
+            case LEVEL_ORDER:
+                return bTree.getNodesLevelOrder().iterator();
 
-            i++;
-        }
+            case IN_ORDER:
+                return bTree.getNodesInOrder().iterator();
 
-        // 2. Pre-Order
-        Integer[] expectedPreOrder = { 0, 1, 3, 4, 2, 5, 6 };
-        Iterator<TreeNode<Integer>> preOrderIterator = binaryTree.getNodesPreOrder().iterator();
-        i = 0;
-        while (preOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedPreOrder[i], preOrderIterator.next().getData());
+            case PRE_ORDER:
+                return bTree.getNodesPreOrder().iterator();
 
-            i++;
-        }
+            case POST_ORDER:
+                return bTree.getNodesPostOrder().iterator();
 
-        Integer[] expectedReversePreOrder = { 0, 2, 6, 5, 1, 4, 3 };
-        Iterator<TreeNode<Integer>> reversePreOrderIterator = binaryTree.getNodesReversePreOrder().iterator();
-        i = 0;
-        while (reversePreOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReversePreOrder[i], reversePreOrderIterator.next().getData());
+            case REVERSE_LEVEL_ORDER:
+                return bTree.getNodesReverseLevelOrder().iterator();
 
-            i++;
-        }
+            case REVERSE_IN_ORDER:
+                return bTree.getNodesReverseInOrder().iterator();
 
-        // 3. Post-order
-        Integer[] expectedPostOrder = { 3, 4, 1, 5, 6, 2, 0 };
-        Iterator<TreeNode<Integer>> postOrderIterator = binaryTree.getNodesPostOrder().iterator();
-        i = 0;
-        while (postOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedPostOrder[i], postOrderIterator.next().getData());
+            case REVERSE_PRE_ORDER:
+                return bTree.getNodesReversePreOrder().iterator();
 
-            i++;
-        }
+            case REVERSE_POST_ORDER:
+                return bTree.getNodesReversePostOrder().iterator();
 
-        Integer[] expectedReversePostOrder = { 6, 5, 2, 4, 3, 1, 0 };
-        Iterator<TreeNode<Integer>> reversePostOrderIterator = binaryTree.getNodesReversePostOrder().iterator();
-        i = 0;
-        while (reversePostOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReversePostOrder[i], reversePostOrderIterator.next().getData());
-
-            i++;
-        }
-
-        // 4. Level-order
-        Integer[] expectedLevelOrder = { 0, 1, 2, 3, 4, 5, 6 };
-        Iterator<TreeNode<Integer>> levelOrderIterator = binaryTree.getNodesLevelOrder().iterator();
-        i = 0;
-        while (levelOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedLevelOrder[i], levelOrderIterator.next().getData());
-
-            i++;
-        }
-
-        Integer[] expectedReverseLevelOrder = { 0, 2, 1, 6, 5, 4, 3 };
-        Iterator<TreeNode<Integer>> reverseLevelOrderIterator = binaryTree.getNodesReverseLevelOrder().iterator();
-        i = 0;
-        while (reverseLevelOrderIterator.hasNext()) {
-            Assert.assertEquals(expectedReverseLevelOrder[i], reverseLevelOrderIterator.next().getData());
-
-            i++;
+            default:
+                return null;
         }
     }
 }

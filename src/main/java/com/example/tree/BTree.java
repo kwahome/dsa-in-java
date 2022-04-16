@@ -623,11 +623,11 @@ public class BTree<T> implements BinaryTree<T> {
             BinaryTreeNode<T> bTreeSearchStartNode = (BinaryTreeNode<T>) searchStartNode;
 
             switch (traversalOrder) {
-                case IN_ORDER:
-                    return this.dfsInOrder(bTreeSearchStartNode, item, false);
-
                 case LEVEL_ORDER:
                     return this.bfs(bTreeSearchStartNode, item, false);
+
+                case IN_ORDER:
+                    return this.dfsInOrder(bTreeSearchStartNode, item, false);
 
                 case PRE_ORDER:
                     return this.dfsPreOrder(bTreeSearchStartNode, item, false);
@@ -635,11 +635,11 @@ public class BTree<T> implements BinaryTree<T> {
                 case POST_ORDER:
                     return this.dfsPostOrder(bTreeSearchStartNode, item, false);
 
-                case REVERSE_IN_ORDER:
-                    return this.dfsInOrder(bTreeSearchStartNode, item, true);
-
                 case REVERSE_LEVEL_ORDER:
                     return this.bfs(bTreeSearchStartNode, item, true);
+
+                case REVERSE_IN_ORDER:
+                    return this.dfsInOrder(bTreeSearchStartNode, item, true);
 
                 case REVERSE_PRE_ORDER:
                     return this.dfsPreOrder(bTreeSearchStartNode, item, true);
