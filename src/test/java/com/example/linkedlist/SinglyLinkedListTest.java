@@ -2,7 +2,9 @@ package com.example.linkedlist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -940,5 +942,83 @@ public class SinglyLinkedListTest {
         Assert.assertEquals(items[1], linkedList.peek());
         Assert.assertEquals(items[1], linkedList.peekFirst());
         Assert.assertEquals(items[items.length - 2], linkedList.peekLast());
+    }
+
+    @Test
+    public void shouldReturnIterators() {
+        LinkedList<String> linkedList = new SinglyLinkedList<>();
+
+        Assert.assertEquals(0, linkedList.size());
+        Assert.assertNull(linkedList.getHead());
+        Assert.assertNull(linkedList.getTail());
+        Assert.assertNull(linkedList.getFirst());
+        Assert.assertNull(linkedList.getLast());
+
+        Assert.assertEquals(null, linkedList.remove());
+
+        String testString = "this is a test string";
+
+        String[] items = new String[] {
+                testString,
+                "Hello World!",
+                "Uhali gani?",
+                testString,
+                "to be or not to be",
+                "furaha" };
+
+        linkedList.addAll(items);
+
+        Assert.assertEquals(items.length, linkedList.size());
+
+        Assert.assertEquals(testString, linkedList.getHead().getNodeData());
+        Assert.assertEquals(testString, linkedList.getFirst());
+
+        Assert.assertEquals(items[items.length - 1], linkedList.getTail().getNodeData());
+        Assert.assertEquals(items[items.length - 1], linkedList.getLast());
+
+        Assert.assertEquals(testString, linkedList.peek());
+        Assert.assertEquals(testString, linkedList.peekFirst());
+        Assert.assertEquals(items[items.length - 1], linkedList.peekLast());
+
+        Iterator<String> iterator = linkedList.iterator();
+
+        int index = 0;
+
+        while (iterator.hasNext()) {
+            Assert.assertEquals(items[index], iterator.next());
+
+            index++;
+        }
+
+        iterator = linkedList.descendingIterator();
+
+        index = items.length - 1;
+
+        while (iterator.hasNext()) {
+            Assert.assertEquals(items[index], iterator.next());
+
+            index--;
+        }
+
+        index = 0;
+
+        ListIterator<String> listIterator = linkedList.listIterator(index);
+
+        while (listIterator.hasNext()) {
+            Assert.assertEquals(items[index], listIterator.next());
+
+            index++;
+        }
+
+        index = 2;
+
+        listIterator = linkedList.listIterator(index);
+
+        while (listIterator.hasNext()) {
+            Assert.assertEquals(items[index], listIterator.next());
+
+            index++;
+        }
+
     }
 }
