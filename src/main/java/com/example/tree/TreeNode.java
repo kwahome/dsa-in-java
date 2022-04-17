@@ -55,7 +55,7 @@ public abstract class TreeNode<T> {
     public T getData() {
         return this.data;
     }
-    
+
     /**
      * Returns the number of children of the node.
      * 
@@ -99,5 +99,19 @@ public abstract class TreeNode<T> {
      */
     public boolean isInternal() {
         return !this.isExternal();
+    }
+
+    /**
+     * Sets the data associated with the node.
+     */
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    /**
+     * Sets the parent of the node.
+     */
+    public void setParent(TreeNode<T> parent) {
+        this.parent = parent;
     }
 }
