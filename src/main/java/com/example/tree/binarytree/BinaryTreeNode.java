@@ -1,7 +1,9 @@
-package com.example.tree;
+package com.example.tree.binarytree;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.tree.TreeNode;
 
 /**
  * Class representing a node of a binary tree.

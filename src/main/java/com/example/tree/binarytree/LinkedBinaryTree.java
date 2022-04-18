@@ -1,4 +1,4 @@
-package com.example.tree;
+package com.example.tree.binarytree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,6 +8,8 @@ import com.example.queues.FIFOQueue;
 import com.example.queues.Queue;
 import com.example.stack.LinkedListBasedStack;
 import com.example.stack.Stack;
+import com.example.tree.TraversalOrder;
+import com.example.tree.TreeNode;
 
 /**
  * Binary tree implementation.

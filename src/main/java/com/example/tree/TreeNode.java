@@ -1,5 +1,7 @@
 package com.example.tree;
 
+import com.example.tree.binarytree.BinaryTreeNode;
+
 /**
  * Represents a node of a tree data-structure.
  */
