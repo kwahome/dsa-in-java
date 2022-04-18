@@ -1,10 +1,13 @@
-package com.example.tree;
+package com.example.tree.binarytree;
 
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.example.tree.TraversalOrder;
+import com.example.tree.TreeNode;
 
 import org.junit.Assert;
 

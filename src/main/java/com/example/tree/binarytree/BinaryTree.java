@@ -1,4 +1,7 @@
-package com.example.tree;
+package com.example.tree.binarytree;
+
+import com.example.tree.Tree;
+import com.example.tree.TreeNode;
 
 /**
  * Binary tree interface.
