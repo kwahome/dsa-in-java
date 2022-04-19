@@ -1,5 +1,10 @@
 package com.example.tree.bst;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.example.tree.BinaryTreeTestHelper;
+import com.example.tree.TraversalOrder;
 import com.example.tree.binarytree.BinaryTreeNode;
 
 import org.junit.Assert;
@@ -93,5 +98,45 @@ public class BinarySearchTreeTest {
 
         Assert.assertEquals(binarySearchTree.getRoot(),
                 ((BinaryTreeNode<Integer>) binarySearchTree.getRoot()).getRightChild().getParent());
+    }
+
+    @Test
+    public void shouldTraverseABinaryTree() {
+        BinarySearchTree<Integer> binaryTree = new BinarySearchTree<>();
+
+        binaryTree.insert(0);
+        binaryTree.insert(1);
+        binaryTree.insert(2);
+        // binaryTree.insert(3);
+        // binaryTree.insert(4);
+        // binaryTree.insert(5);
+        // binaryTree.insert(6);
+
+        Assert.assertNotNull(binaryTree);
+
+        Assert.assertEquals(7, binaryTree.size());
+        Assert.assertEquals(2, binaryTree.height());
+        Assert.assertEquals(2, binaryTree.degree());
+
+        Assert.assertFalse(binaryTree.isEmpty());
+        Assert.assertTrue(binaryTree.isBalanced());
+        Assert.assertTrue(binaryTree.isComplete());
+        Assert.assertTrue(binaryTree.isFull());
+        Assert.assertTrue(binaryTree.isPerfect());
+
+        Map<TraversalOrder, Integer[]> testScenarios = new HashMap<>();
+
+        testScenarios.put(TraversalOrder.LEVEL_ORDER, new Integer[] { 3, 1, 5, 0, 2, 4, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_LEVEL_ORDER, new Integer[] { 3, 5, 1, 6, 4, 3, 0 });
+        testScenarios.put(TraversalOrder.IN_ORDER, new Integer[] { 0, 1, 2, 3, 4, 5, 6 });
+        testScenarios.put(TraversalOrder.REVERSE_IN_ORDER, new Integer[] { 6, 5, 4, 3, 2, 1, 0 });
+        // testScenarios.put(TraversalOrder.PRE_ORDER, new Integer[] { 0, 1, 2 });
+        // testScenarios.put(TraversalOrder.REVERSE_PRE_ORDER, new Integer[] { 0, 2, 1
+        // });
+        // testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 1, 2, 0 });
+        // testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 2, 1, 0
+        // });
+
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
     }
 }

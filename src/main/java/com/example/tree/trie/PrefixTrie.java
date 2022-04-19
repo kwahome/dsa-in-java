@@ -82,44 +82,58 @@ public class PrefixTrie implements Trie {
      */
     public boolean remove(String key) {
 
-        boolean deleted = false;
+        TrieNode root = this.getRoot();
 
-        TrieNode current = this.getRoot();
-
-        if (key != null && !current.isEmpty()) {
+        if (key != null && !root.isEmpty()) {
 
             // We want to mark where to start the delete
             TrieNode deleteBelow = null;
             int deleteIndex = -1;
+            boolean deleteChildren = false;
 
             for (int position = 0; position < key.length(); position++) {
 
-                int index = key.charAt(position) - this.configuration.getFirstAlphabetCharacter();
+                char charAtPosition = key.charAt(position);
 
-                TrieNode next = current.getChildAt(index);
+                int index = charAtPosition - this.configuration.getFirstAlphabetCharacter();
 
-                if (next == null) {
+                TrieNode charNode = root.getChildAt(index);
+
+                if (charNode == null) {
                     // key not in trie
-                    deleted = false;
-
-                    break;
+                    return false;
                 }
 
-                if (current.getChildrenCount() > 1) {
-                    // a node with more than one child has paths
-                    // to more words so we cannot wholesome
-                    // delete it but we can delete below it
-                    // on the index of the char we are looking at
-                    deleteBelow = current;
+                // Check whether the current root node is a prefix for more than one word
+                if (root.getChildrenCount() > 1) {
+                    // We are at the least common ancestor between our delete key
+                    // and other words in the trie.
+                    // We want to mark this shared char as the point to delete
+                    // chars that make up our word if they have no other prefix
+                    // associated with them.
+                    deleteBelow = root;
                     deleteIndex = index;
+                    deleteChildren = true;
                 }
 
-                current = next;
+                // Then check whether our last character while not a prefix for more than one
+                // other words, is a prefix for one word that continues after it.
+                if (position == key.length() - 1 && charNode.getChildrenCount() > 0) {
+                    // We are at the last char in the delete key and the node associated
+                    // with this char has more children that form prefixes for other words,
+                    // thus they cannot be deleted but rather we can unmark our delete key
+                    // as a word in the trie
+                    deleteBelow = charNode;
+                    deleteIndex = index;
+                    deleteChildren = false;
+                }
+
+                root = charNode;
             }
 
-            if (!current.isWord()) {
+            if (!root.isWord()) {
                 // word isn't in trie
-                deleted = false;
+                return false;
             }
 
             if (deleteBelow == null) {
@@ -127,15 +141,20 @@ public class PrefixTrie implements Trie {
                 // We are deleting the entire trie
                 this.initialize();
 
-                deleted = true;
-            } else {
+                return true;
+            }
+
+            if (deleteChildren) {
                 deleteBelow.getChildren()[deleteIndex] = null;
 
-                deleted = true;
+            } else {
+                deleteBelow.setWord(false);
             }
+
+            return true;
         }
 
-        return deleted;
+        return false;
     }
 
     /**

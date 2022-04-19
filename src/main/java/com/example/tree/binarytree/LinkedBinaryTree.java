@@ -17,10 +17,10 @@ import com.example.tree.TreeNode;
 public class LinkedBinaryTree<T> implements BinaryTree<T> {
 
     // The root node of the tree.
-    private BinaryTreeNode<T> root;
+    protected BinaryTreeNode<T> root;
 
     // The number of nodes in the tree;
-    private int numberOfNodes;
+    protected int numberOfNodes;
 
     /**
      * Class constructor.
@@ -524,33 +524,10 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
      * {@inheritDoc}
      */
     public boolean isBalanced() {
-        boolean balanced = !this.isEmpty();
+        BinaryTreeNode<T> root = (BinaryTreeNode<T>) this.getRoot();
 
-        if (balanced) {
-            // Tree is not empty thus we want to check subtrees
-            Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
-
-            queue.enqueue((BinaryTreeNode<T>) this.getRoot());
-
-            while (!queue.isEmpty()) {
-                BinaryTreeNode<T> current = queue.dequeue();
-
-                // compute the max height/depth of each sub-tree
-                balanced = balanced
-                        && (this.getHeight(current.getLeftChild()) - this.getHeight(current.getRightChild())) <= 1;
-
-                if (current.hasLeftChild()) {
-                    queue.enqueue(current.getLeftChild());
-                }
-
-                if (current.hasRightChild()) {
-                    queue.enqueue(current.getRightChild());
-                }
-            }
-
-        }
-
-        return balanced;
+        return !(root == null)
+                && Math.abs(this.getHeight(root.getLeftChild()) - this.getHeight(root.getRightChild())) <= 1;
     }
 
     /**

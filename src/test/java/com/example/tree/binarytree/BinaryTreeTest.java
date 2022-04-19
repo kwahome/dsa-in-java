@@ -3,9 +3,9 @@ package com.example.tree.binarytree;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
+import com.example.tree.BinaryTreeTestHelper;
 import com.example.tree.TraversalOrder;
 import com.example.tree.TreeNode;
 
@@ -140,7 +140,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 1, 2, 0 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 2, 1, 0 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
     }
 
     @Test
@@ -291,7 +291,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 3, 4, 1, 5, 6, 2, 0 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 6, 5, 2, 4, 3, 1, 0 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
     }
 
     @Test
@@ -371,7 +371,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 1, 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 1, 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertTrue(binaryTree.insert(3));
 
@@ -397,7 +397,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 1, 3, 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 3, 1, 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertTrue(binaryTree.insert(4));
 
@@ -423,7 +423,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 4, 1, 3, 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 3, 4, 1, 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertEquals(1, binaryTree.remove(1).intValue());
 
@@ -450,7 +450,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 4, 3, 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 3, 4, 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertEquals(3, binaryTree.remove(3).intValue());
 
@@ -477,7 +477,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 4, 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 4, 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertEquals(4, binaryTree.remove(4).intValue());
 
@@ -504,7 +504,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 2 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 2 });
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
 
         Assert.assertEquals(2, binaryTree.remove(2).intValue());
 
@@ -530,7 +530,7 @@ public class BinaryTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] {});
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] {});
 
-        assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
     }
 
     @Test
@@ -613,63 +613,5 @@ public class BinaryTreeTest {
         Assert.assertEquals(null, binaryTree.getRightChild(binaryTree.getRoot()));
         Assert.assertEquals(0, binaryTree.getDepth(binaryTree.getRoot()));
         Assert.assertFalse(binaryTree.contains(0));
-
-    }
-
-    private <T> void assertCorrectTraversal(BinaryTree<T> binaryTree, Map<TraversalOrder, T[]> testScenarios) {
-
-        for (Map.Entry<TraversalOrder, T[]> testScenario : testScenarios.entrySet()) {
-            TraversalOrder traversalOrder = testScenario.getKey();
-            T[] expected = testScenario.getValue();
-
-            System.out.println(traversalOrder);
-
-            assertCorrectTraversal(binaryTree, traversalOrder, expected);
-        }
-
-    }
-
-    private <T> void assertCorrectTraversal(BinaryTree<T> binaryTree, TraversalOrder traversalOrder, T[] expected) {
-        Iterator<TreeNode<T>> nodesIterator = getTreeNodesIterator(binaryTree, traversalOrder);
-
-        int i = 0;
-
-        while (nodesIterator.hasNext()) {
-            Assert.assertEquals(expected[i], nodesIterator.next().getData());
-
-            i++;
-        }
-    }
-
-    private <T> Iterator<TreeNode<T>> getTreeNodesIterator(BinaryTree<T> BinaryTreeImpl,
-            TraversalOrder traversalOrder) {
-        switch (traversalOrder) {
-            case LEVEL_ORDER:
-                return BinaryTreeImpl.getNodesLevelOrder().iterator();
-
-            case IN_ORDER:
-                return BinaryTreeImpl.getNodesInOrder().iterator();
-
-            case PRE_ORDER:
-                return BinaryTreeImpl.getNodesPreOrder().iterator();
-
-            case POST_ORDER:
-                return BinaryTreeImpl.getNodesPostOrder().iterator();
-
-            case REVERSE_LEVEL_ORDER:
-                return BinaryTreeImpl.getNodesReverseLevelOrder().iterator();
-
-            case REVERSE_IN_ORDER:
-                return BinaryTreeImpl.getNodesReverseInOrder().iterator();
-
-            case REVERSE_PRE_ORDER:
-                return BinaryTreeImpl.getNodesReversePreOrder().iterator();
-
-            case REVERSE_POST_ORDER:
-                return BinaryTreeImpl.getNodesReversePostOrder().iterator();
-
-            default:
-                return null;
-        }
     }
 }
