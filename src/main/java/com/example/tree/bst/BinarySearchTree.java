@@ -38,12 +38,67 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
      * {@inheritDoc}
      */
     @Override
+    public boolean contains(T item) {
+        return this.search(item) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean insert(T item) {
         this.root = this.insert((BinaryTreeNode<T>) this.getRoot(), item, null);
 
         this.numberOfNodes++;
 
         return true;
+    }
+
+    /**
+     * Search for an item in a BST with an algorithm that discards
+     * half the tree at each stage and is thus O(log n) in space
+     * complexity
+     * 
+     * @param item the item to search
+     * @return TreeNode<T>
+     */
+    @Override
+    public TreeNode<T> search(T item) {
+        return this.search((BinaryTreeNode<T>) this.getRoot(), item);
+    }
+
+    /**
+     * Search for an item in a BST given a starting point of the
+     * search with an algorithm that discards half the tree at
+     * each stage and is thus O(log n) in space complexity
+     * 
+     * @param searchStartNode TreeNode<T>
+     * @param item            the item to search
+     * @return TreeNode<T>
+     */
+    @Override
+    public TreeNode<T> search(TreeNode<T> searchStartNode, T item) {
+
+        if (searchStartNode != null && item != null) {
+            BinaryTreeNode<T> bstSearchStartNode = (BinaryTreeNode<T>) searchStartNode;
+
+            if (item.equals(bstSearchStartNode.getData())) {
+                // we have found it
+                return bstSearchStartNode;
+            }
+
+            if (this.lessThan(item, bstSearchStartNode.getData())) {
+                // the search key will be in the left sub tree
+                return this.search(bstSearchStartNode.getLeftChild(), item);
+            }
+
+            if (this.greaterThan(item, bstSearchStartNode.getData())) {
+                // the search key will be in the right sub tree
+                return this.search(bstSearchStartNode.getRightChild(), item);
+            }
+        }
+
+        return null;
     }
 
     private BinaryTreeNode<T> insert(BinaryTreeNode<T> node, T item, BinaryTreeNode<T> parent) {

@@ -760,8 +760,22 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
     /**
      * {@inheritDoc}
      */
+    public TreeNode<T> search(T item) {
+        return this.search((BinaryTreeNode<T>) this.getRoot(), item);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public TreeNode<T> search(T item, TraversalOrder traversalOrder) {
         return this.search((BinaryTreeNode<T>) this.getRoot(), item, traversalOrder);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public TreeNode<T> search(TreeNode<T> searchStartNode, T item) {
+        return this.search(searchStartNode, item, TraversalOrder.LEVEL_ORDER);
     }
 
     /**

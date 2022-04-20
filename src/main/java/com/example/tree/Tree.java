@@ -221,6 +221,14 @@ public interface Tree<T> extends Iterable<T> {
     public T remove(T item);
 
     /**
+     * Search for an item in a tree using a default level order traversal.
+     * 
+     * @param item the item to search
+     * @return TreeNode<T>
+     */
+    TreeNode<T> search(T item);
+
+    /**
      * Return the tree node containing a specified element or null
      * if not found.
      * 
@@ -230,7 +238,17 @@ public interface Tree<T> extends Iterable<T> {
      * @param traversalOrder the order of traversal
      * @return TreeNode<T>
      */
-    public TreeNode<T> search(T item, TraversalOrder traversalOrder);
+    TreeNode<T> search(T item, TraversalOrder traversalOrder);
+
+    /**
+     * Search for an item in a tree given a start node from which the
+     * search starts using a default level order traversal.
+     * 
+     * @param searchStartNode the search start node
+     * @param item            the item to search
+     * @return TreeNode<T>
+     */
+    TreeNode<T> search(TreeNode<T> searchStartNode, T item);
 
     /**
      * Return the tree node containing a specified element or null
@@ -243,7 +261,7 @@ public interface Tree<T> extends Iterable<T> {
      * @param traversalOrder the order of traversal
      * @return TreeNode<T>
      */
-    public TreeNode<T> search(TreeNode<T> startNode, T item, TraversalOrder traversalOrder);
+    TreeNode<T> search(TreeNode<T> startNode, T item, TraversalOrder traversalOrder);
 
     /**
      * Returns the size of the tree. The size of a tree is the number of

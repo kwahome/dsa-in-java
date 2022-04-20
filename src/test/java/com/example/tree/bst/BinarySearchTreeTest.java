@@ -65,7 +65,7 @@ public class BinarySearchTreeTest {
 
     @Test
     public void shouldCreateABinaryTree_GivenPerfectRootNode() {
-        BinaryTreeNode<Integer> rootNode = new BinaryTreeNode<>(0, 1, 2);
+        BinaryTreeNode<Integer> rootNode = new BinaryTreeNode<>(1, 0, 2);
         BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>(rootNode);
 
         Assert.assertNotNull(binarySearchTree);
@@ -79,9 +79,9 @@ public class BinarySearchTreeTest {
         Assert.assertTrue(binarySearchTree.isComplete());
         Assert.assertTrue(binarySearchTree.isFull());
         Assert.assertTrue(binarySearchTree.isPerfect());
-        Assert.assertEquals(0, binarySearchTree.getRoot().getData().intValue());
+        Assert.assertEquals(1, binarySearchTree.getRoot().getData().intValue());
         Assert.assertEquals(2, binarySearchTree.getRoot().getChildrenCount());
-        Assert.assertEquals(1, binarySearchTree.getLeftChild(binarySearchTree.getRoot()).getData().intValue());
+        Assert.assertEquals(0, binarySearchTree.getLeftChild(binarySearchTree.getRoot()).getData().intValue());
         Assert.assertEquals(2, binarySearchTree.getRightChild(binarySearchTree.getRoot()).getData().intValue());
         Assert.assertEquals(0, binarySearchTree.getDepth(binarySearchTree.getRoot()));
         Assert.assertEquals(1, binarySearchTree.getDepth(binarySearchTree.getLeftChild(binarySearchTree.getRoot())));
@@ -102,27 +102,26 @@ public class BinarySearchTreeTest {
 
     @Test
     public void shouldTraverseABinarySearchTree() {
-        BinarySearchTree<Integer> binaryTree = new BinarySearchTree<>();
+        BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
 
-        binaryTree.insert(0);
-        binaryTree.insert(1);
-        binaryTree.insert(2);
-        binaryTree.insert(3);
-        binaryTree.insert(4);
-        binaryTree.insert(5);
-        binaryTree.insert(6);
+        // insert from an ordered array
+        Integer[] bstItems = { 0, 1, 2, 3, 4, 5, 6 };
 
-        Assert.assertNotNull(binaryTree);
+        for (Integer bstItem : bstItems) {
+            binarySearchTree.insert(bstItem);
+        }
 
-        Assert.assertEquals(7, binaryTree.size());
-        Assert.assertEquals(2, binaryTree.height());
-        Assert.assertEquals(2, binaryTree.degree());
+        Assert.assertNotNull(binarySearchTree);
 
-        Assert.assertFalse(binaryTree.isEmpty());
-        Assert.assertTrue(binaryTree.isBalanced());
-        Assert.assertTrue(binaryTree.isComplete());
-        Assert.assertTrue(binaryTree.isFull());
-        Assert.assertTrue(binaryTree.isPerfect());
+        Assert.assertEquals(7, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertTrue(binarySearchTree.isComplete());
+        Assert.assertTrue(binarySearchTree.isFull());
+        Assert.assertTrue(binarySearchTree.isPerfect());
 
         Map<TraversalOrder, Integer[]> testScenarios = new HashMap<>();
 
@@ -135,6 +134,56 @@ public class BinarySearchTreeTest {
         testScenarios.put(TraversalOrder.POST_ORDER, new Integer[] { 0, 2, 1, 4, 6, 5, 3 });
         testScenarios.put(TraversalOrder.REVERSE_POST_ORDER, new Integer[] { 6, 4, 5, 2, 0, 1, 3 });
 
-        BinaryTreeTestHelper.assertCorrectTraversal(binaryTree, testScenarios);
+        BinaryTreeTestHelper.assertCorrectTraversal(binarySearchTree, testScenarios);
+
+        // insert from an un-ordered array
+        binarySearchTree = new BinarySearchTree<>();
+        bstItems = new Integer[] { 0, 6, 2, 5, 3, 4, 1 };
+
+        for (Integer bstItem : bstItems) {
+            binarySearchTree.insert(bstItem);
+        }
+
+        Assert.assertNotNull(binarySearchTree);
+
+        Assert.assertEquals(7, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertTrue(binarySearchTree.isComplete());
+        Assert.assertTrue(binarySearchTree.isFull());
+        Assert.assertTrue(binarySearchTree.isPerfect());
+
+        BinaryTreeTestHelper.assertCorrectTraversal(binarySearchTree, testScenarios);
+    }
+
+    @Test
+    public void shouldSearchABinarySearchTree() {
+        BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
+
+        Integer[] bstItems = { 0, 6, 2, 5, 3, 4, 1 };
+
+        for (Integer bstItem : bstItems) {
+            binarySearchTree.insert(bstItem);
+        }
+
+        Assert.assertNotNull(binarySearchTree);
+
+        Assert.assertEquals(7, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertTrue(binarySearchTree.isComplete());
+        Assert.assertTrue(binarySearchTree.isFull());
+        Assert.assertTrue(binarySearchTree.isPerfect());
+
+        for (Integer bstItem : bstItems) {
+            Assert.assertTrue(binarySearchTree.contains(bstItem));
+            Assert.assertEquals(bstItem, binarySearchTree.search(bstItem).getData());
+        }
     }
 }
