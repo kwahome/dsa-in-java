@@ -46,85 +46,141 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
         return true;
     }
 
-    private void balance() {
+    private BinaryTreeNode<T> insert(BinaryTreeNode<T> node, T item, BinaryTreeNode<T> parent) {
+        if (node == null) {
+            node = new BinaryTreeNode<T>(item, parent);
 
-        BinaryTreeNode<T> root = (BinaryTreeNode<T>) this.getRoot();
-        BinaryTreeNode<T> imbalancedSubTreeRoot = root;
-
-        Queue<BinaryTreeNode<T>> queue = new FIFOQueue<>(this.size());
-
-        queue.enqueue(root);
-
-        int count = 0;
-        int midPoint = Math.floorDiv(this.size(), 2);
-        boolean found = false;
-
-        while (!queue.isEmpty()) {
-            BinaryTreeNode<T> current = queue.dequeue();
-
-            int subTreesHeightDiff = Math
-                    .abs(this.getHeight(current.getLeftChild()) - this.getHeight(current.getRightChild()));
-
-            if (current != null && subTreesHeightDiff > 1) {
-                // if the height of this subtree differs by more than one,
-                // we have found the imbalance
-                found = true;
-                imbalancedSubTreeRoot = current;
-                midPoint = Math.floorDiv(this.size() - count, 2);
-            }
-
-            // check for children
-            if (current.hasLeftChild()) {
-                queue.enqueue(current.getLeftChild());
-            }
-
-            if (current.hasRightChild()) {
-                queue.enqueue(current.getRightChild());
-            }
-
-            count++;
+            return node;
         }
 
+        if (this.lessThanOrEqual(item, node.getData())) {
+            node.setLeftChild(this.insert(node.getLeftChild(), item, node));
+        } else {
+            node.setRightChild(this.insert(node.getRightChild(), item, node));
+        }
+
+        return this.rebalance(node);
     }
 
-    private BinaryTreeNode<T> insert(BinaryTreeNode<T> root, T item, BinaryTreeNode<T> parent) {
-        if (root == null) {
-            root = new BinaryTreeNode<T>(item, parent);
+    private BinaryTreeNode<T> rebalance(BinaryTreeNode<T> node) {
+        if (node != null) {
+            if (this.getHeightDifference(node) < -1) {
 
-            return root;
-        }
+                // Left subtree is too high
+                if (this.getHeightDifference(node.getLeftChild()) == -1) {
+                    // and left child has a left child.
+                    // rotate to the right to balance
+                    return this.rotateRight(node);
+                }
 
-        BinaryTreeNode<T> parentOfRoot = (BinaryTreeNode<T>) root.getParent();
-
-        if (this.lessThanOrEqual(item, root.getData())) {
-
-            if (parentOfRoot != null && !parentOfRoot.hasRightChild()) {
-                // we try and keep the tree balanced
-
-                root.setRightChild(parentOfRoot);
-                root.setParent(parentOfRoot.getParent());
-                parentOfRoot.setParent(root);
-
-                root.setLeftChild(this.insert(root, item, root));
-            } else {
-                root.setLeftChild(this.insert(root.getLeftChild(), item, root));
-            }
-        } else {
-            if (parentOfRoot != null && !parentOfRoot.hasLeftChild()) {
-                // we try and keep the tree balanced
-
-                root.setLeftChild(parentOfRoot);
-                root.setParent(parentOfRoot.getParent());
-                parentOfRoot.setParent(root);
-
-                root.setRightChild(this.insert(root, item, root));
-            } else {
-                root.setRightChild(this.insert(root.getRightChild(), item, root));
+                if (this.getHeightDifference(node.getLeftChild()) == 1) {
+                    // and left child has a right child.
+                    // a double rotation is needed to balance
+                    // rotate to the left then to the right
+                    return this.rotateLeftRight(node);
+                }
             }
 
+            if (this.getHeightDifference(node) > 1) {
+
+                // Right subtree is too high
+                if (this.getHeightDifference(node.getRightChild()) == 1) {
+                    // and right child has a right child.
+                    // rotate to the left to balance
+                    return this.rotateLeft(node);
+                }
+
+                if (this.getHeightDifference(node.getRightChild()) == -1) {
+                    // and right child has a left child.
+                    // a double rotation is needed to balance
+                    // rotate to the right then to the left
+                    return this.rotateRightLeft(node);
+                }
+            }
         }
 
-        return root;
+        return node;
+    }
+
+    /**
+     * A helper function to perform a left rotation of a rooted tree.
+     * 
+     * https://appliedgo.net/balancedtree/
+     */
+    private BinaryTreeNode<T> rotateLeft(BinaryTreeNode<T> node) {
+
+        if (node != null) {
+            BinaryTreeNode<T> right = node.getRightChild();
+
+            node.setRightChild(right.getLeftChild());
+
+            right.setLeftChild(node);
+
+            return right;
+        }
+
+        return node;
+    }
+
+    /**
+     * A helper function to perform a right rotation of a rooted tree.
+     * 
+     * https://appliedgo.net/balancedtree/
+     */
+    private BinaryTreeNode<T> rotateRight(BinaryTreeNode<T> node) {
+        if (node != null) {
+            BinaryTreeNode<T> left = node.getLeftChild();
+
+            node.setLeftChild(left.getRightChild());
+
+            left.setRightChild(node);
+
+            return left;
+        }
+
+        return node;
+    }
+
+    /**
+     * A helper function to perform a double right-left rotation of a rooted tree.
+     * 
+     * https://appliedgo.net/balancedtree/
+     */
+    private BinaryTreeNode<T> rotateRightLeft(BinaryTreeNode<T> node) {
+        if (node != null) {
+            node.setRightChild(this.rotateRight(node.getRightChild()));
+
+            node = this.rotateLeft(node);
+
+            return node;
+        }
+
+        return node;
+    }
+
+    /**
+     * A helper function to perform a double left-right rotation of a rooted tree.
+     * 
+     * https://appliedgo.net/balancedtree/
+     */
+    private BinaryTreeNode<T> rotateLeftRight(BinaryTreeNode<T> node) {
+        if (node != null) {
+            node.setLeftChild(this.rotateLeft(node.getLeftChild()));
+
+            node = this.rotateRight(node);
+
+            return node;
+        }
+
+        return node;
+    }
+
+    private int getHeightDifference(BinaryTreeNode<T> node) {
+        if (node != null) {
+            return this.getHeight(node.getRightChild()) - this.getHeight(node.getLeftChild());
+        }
+
+        return 0;
     }
 
     // Tests if the value of a < b
