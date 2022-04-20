@@ -754,7 +754,6 @@ public class LinkedBinaryTree<T> implements BinaryTree<T> {
         }
 
         return null;
-
     }
 
     /**

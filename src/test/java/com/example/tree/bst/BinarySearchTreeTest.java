@@ -186,4 +186,111 @@ public class BinarySearchTreeTest {
             Assert.assertEquals(bstItem, binarySearchTree.search(bstItem).getData());
         }
     }
+
+    @Test
+    public void shouldRemoveAnItemFromABinarySearchTree() {
+        BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
+
+        // try to remove from an empty tree
+        Assert.assertEquals(null, binarySearchTree.remove(0));
+
+        // insert from an ordered array
+        Integer[] bstItems = { 0, 1, 2, 3, 4, 5, 6 };
+
+        for (Integer bstItem : bstItems) {
+            binarySearchTree.insert(bstItem);
+        }
+
+        Assert.assertNotNull(binarySearchTree);
+
+        Assert.assertEquals(7, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertTrue(binarySearchTree.isComplete());
+        Assert.assertTrue(binarySearchTree.isFull());
+        Assert.assertTrue(binarySearchTree.isPerfect());
+
+        // remove a left leaf node and assert balance maintained
+        Assert.assertEquals(0, binarySearchTree.remove(0).intValue());
+
+        Assert.assertEquals(6, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertFalse(binarySearchTree.isComplete());
+        Assert.assertFalse(binarySearchTree.isFull());
+        Assert.assertFalse(binarySearchTree.isPerfect());
+
+        // remove a right node and assert balance maintained
+        Assert.assertEquals(6, binarySearchTree.remove(6).intValue());
+
+        Assert.assertEquals(5, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        // While the tree is balanced, it is not complete
+        // as the last level is not filled from the left
+        Assert.assertFalse(binarySearchTree.isComplete());
+        Assert.assertFalse(binarySearchTree.isFull());
+        Assert.assertFalse(binarySearchTree.isPerfect());
+
+        // remove a root node and assert balance maintained
+        Assert.assertEquals(3, binarySearchTree.remove(3).intValue());
+
+        Assert.assertEquals(4, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        // While the tree is balanced, it is not complete
+        // as the last level is not filled from the left
+        Assert.assertFalse(binarySearchTree.isComplete());
+        Assert.assertFalse(binarySearchTree.isFull());
+        Assert.assertFalse(binarySearchTree.isPerfect());
+
+        // create a new bst and insert from unordered array
+        bstItems = new Integer[] { 0, 6, 2, 5, 3, 4, 1 };
+
+        binarySearchTree = new BinarySearchTree<>();
+
+        for (Integer bstItem : bstItems) {
+            binarySearchTree.insert(bstItem);
+        }
+
+        Assert.assertNotNull(binarySearchTree);
+
+        Assert.assertEquals(7, binarySearchTree.size());
+        Assert.assertEquals(2, binarySearchTree.height());
+        Assert.assertEquals(2, binarySearchTree.degree());
+
+        Assert.assertFalse(binarySearchTree.isEmpty());
+        Assert.assertTrue(binarySearchTree.isBalanced());
+        Assert.assertTrue(binarySearchTree.isComplete());
+        Assert.assertTrue(binarySearchTree.isFull());
+        Assert.assertTrue(binarySearchTree.isPerfect());
+
+        int count = 0;
+
+        for (Integer bstItem : bstItems) {
+            System.out.println(bstItem.intValue());
+            Assert.assertTrue(binarySearchTree.contains(bstItem));
+            Assert.assertEquals(bstItem, binarySearchTree.search(bstItem).getData());
+
+            Assert.assertEquals(bstItem, binarySearchTree.remove(bstItem));
+
+            Assert.assertEquals(bstItems.length - (count + 1), binarySearchTree.size());
+            Assert.assertFalse(binarySearchTree.contains(bstItem));
+            Assert.assertEquals(null, binarySearchTree.search(bstItem));
+
+            count++;
+        }
+    }
 }

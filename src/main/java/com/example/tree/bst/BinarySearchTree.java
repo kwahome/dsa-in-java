@@ -55,6 +55,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
     }
 
     /**
+     * Removes an item from a binary seach tree using a logarithmic
+     * algorithm to look for the item that is to be removed. The
+     * deletion maintains the tree's height balance
+     * 
+     * @param item the item to be removed
+     * @return T the removed item
+     */
+    @Override
+    public T remove(T item) {
+        return this.remove((BinaryTreeNode<T>) this.getRoot(), item) != null ? item : null;
+    }
+
+    /**
      * Search for an item in a BST with an algorithm that discards
      * half the tree at each stage and is thus O(log n) in space
      * complexity
@@ -115,6 +128,93 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
         }
 
         return this.rebalance(node);
+    }
+
+    /**
+     * Return node's successor value
+     * 
+     * @param node
+     * @return T
+     */
+    private BinaryTreeNode<T> getSuccessor(BinaryTreeNode<T> node) {
+
+        if (node != null) {
+            node = node.getRightChild();
+
+            while (node.hasLeftChild()) {
+                node = node.getLeftChild();
+            }
+
+            return node;
+        }
+
+        return null;
+    }
+
+    /**
+     * Return node's predecessor value
+     * 
+     * @param node
+     * @return T
+     */
+    private BinaryTreeNode<T> getPredecessor(BinaryTreeNode<T> node) {
+        if (node != null) {
+            node = node.getLeftChild();
+
+            while (node.hasRightChild()) {
+                node = node.getRightChild();
+            }
+
+            return node;
+        }
+
+        return null;
+    }
+
+    private BinaryTreeNode<T> remove(BinaryTreeNode<T> subTreeRoot, T deleteKey) {
+        if (subTreeRoot == null) {
+            return null;
+        }
+
+        if (subTreeRoot.getData().equals(deleteKey)) {
+            // we have found it
+
+            if (!subTreeRoot.hasLeftChild() && !subTreeRoot.hasRightChild()) {
+
+                if (this.getRoot().equals(subTreeRoot)) {
+                    // we are deleting the last node in the tree
+                    this.clear();
+
+                } else {
+                    // it's a leaf node
+                    subTreeRoot = null;
+
+                    this.numberOfNodes--;
+                }
+
+            } else if (subTreeRoot.hasRightChild()) {
+                // it's a right child
+                // we get the left most child (lowest item in the right subtree)
+                // to succeed it
+                subTreeRoot.setData(this.getSuccessor(subTreeRoot).getData());
+                subTreeRoot.setRightChild(this.remove(subTreeRoot.getRightChild(), subTreeRoot.getData()));
+            } else {
+                // we try and get a node that can fill in for the delete node
+                // by looking for the largest node in the left subtree
+                subTreeRoot.setData(this.getPredecessor(subTreeRoot).getData());
+                subTreeRoot.setLeftChild(this.remove(subTreeRoot.getLeftChild(), subTreeRoot.getData()));
+            }
+
+        } else if (this.lessThan(deleteKey, subTreeRoot.getData())) {
+            // the delete key will be in the left sub tree
+            subTreeRoot.setLeftChild(this.remove(subTreeRoot.getLeftChild(), deleteKey));
+
+        } else if (this.greaterThan(deleteKey, subTreeRoot.getData())) {
+            // the delete key will be in the right sub tree
+            subTreeRoot.setRightChild(this.remove(subTreeRoot.getRightChild(), deleteKey));
+        }
+
+        return subTreeRoot;
     }
 
     private BinaryTreeNode<T> rebalance(BinaryTreeNode<T> node) {
