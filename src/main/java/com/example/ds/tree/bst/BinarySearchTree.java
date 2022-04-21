@@ -60,7 +60,17 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
      */
     @Override
     public T remove(T item) {
-        return this.remove((BinaryTreeNode<T>) this.getRoot(), item) != null ? item : null;
+        BinaryTreeNode<T> removed = this.remove((BinaryTreeNode<T>) this.getRoot(), item);
+
+        if (removed == null) {
+            return null;
+        }
+
+        if (!this.isBalanced()) {
+            this.rebalance((BinaryTreeNode<T>) this.getRoot());
+        }
+
+        return item;
     }
 
     /**
