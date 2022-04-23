@@ -8,7 +8,7 @@ import com.example.TestScenario;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BalancedBracketsTest {
+public class BalancedParenthesesTest {
 
     @Test
     public void shouldReturnTrueIfBracketsAreBalanced() {
@@ -36,7 +36,7 @@ public class BalancedBracketsTest {
             System.out.println(testScenario.getTestInput());
 
             Assert.assertEquals(testScenario.getExpected(),
-                    BalancedBrackets.areBracketsBalanced(testScenario.getTestInput()));
+                    BalancedParentheses.areParenthesesBalanced(testScenario.getTestInput()));
         }
     }
 }
