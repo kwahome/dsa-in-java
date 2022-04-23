@@ -669,14 +669,15 @@ public class SinglyLinkedList<T> implements LinkedList<T> {
         // decrease count by 1
         this.numberOfItems--;
 
-        // set the tail to the previous node
-        // as there are no back pointers, we'll need to iterate
-        this.tail = this.getNode(Math.max(0, this.size() - 1));
-
         // if the tail equals the head
         // we have polled to the start of the list
         if (tailNode == this.getHead()) {
             this.head = null;
+            this.tail = null;
+        } else {
+            // set the tail to the previous node
+            // as there are no back pointers, we'll need to iterate
+            this.tail = this.getNode(Math.max(0, this.size() - 1));
         }
 
         // set it to null so that is gc'ed
