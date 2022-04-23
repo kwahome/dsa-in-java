@@ -6,17 +6,17 @@ import java.util.Map;
 import com.example.ds.stack.LinkedListBasedStack;
 import com.example.ds.stack.Stack;
 
-public class BalancedBrackets {
+public class BalancedParentheses {
 
-    public static boolean areBracketsBalanced(String input) {
+    public static boolean areParenthesesBalanced(String input) {
         // a map to store the bracket pairs
         // The key is the opening half
         // while the value is the closing half
-        Map<Character, Character> bracketPairs = new HashMap<>();
-        bracketPairs.put('(', ')');
-        bracketPairs.put('{', '}');
-        bracketPairs.put('[', ']');
-        bracketPairs.put('<', '>');
+        Map<Character, Character> parenthesesPairs = new HashMap<>();
+        parenthesesPairs.put('(', ')');
+        parenthesesPairs.put('{', '}');
+        parenthesesPairs.put('[', ']');
+        parenthesesPairs.put('<', '>');
 
         // a stack to track the balance in the pairs
         Stack<Character> stack = new LinkedListBasedStack<>(input.length());
@@ -24,7 +24,7 @@ public class BalancedBrackets {
         for (int i = 0; i < input.length(); i++) {
             Character current = input.charAt(i);
 
-            if (bracketPairs.get(current) != null) {
+            if (parenthesesPairs.get(current) != null) {
                 // this is an opening pair
                 // we want to push it to the stack
                 stack.push(current);
@@ -32,7 +32,7 @@ public class BalancedBrackets {
                 continue;
             }
 
-            if (stack.peek() != null && bracketPairs.get(stack.peek()).equals(current)) {
+            if (stack.peek() != null && parenthesesPairs.get(stack.peek()).equals(current)) {
                 // this is the matching pair for the currently open bracket
                 // we want to pop the stack
                 stack.pop();
